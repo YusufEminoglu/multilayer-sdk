@@ -1,0 +1,57 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="100%" height="100%">
+  <defs>
+    <linearGradient id="bg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#08141e"/>
+      <stop offset="100%" stop-color="#0f263c"/>
+    </linearGradient>
+    <linearGradient id="glow" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#10b981"/>
+      <stop offset="50%" stop-color="#06b6d4"/>
+      <stop offset="100%" stop-color="#3b82f6"/>
+    </linearGradient>
+    <filter id="shadow" x="-20%" y="-20%" width="140%" height="140%">
+      <feDropShadow dx="0" dy="12" stdDeviation="16" flood-color="#06b6d4" flood-opacity="0.35"/>
+    </filter>
+  </defs>
+
+  <rect x="24" y="24" width="464" height="464" rx="96" fill="url(#bg)" stroke="url(#glow)" stroke-width="6" filter="url(#shadow)"/>
+
+  <!-- 2x2 Synchronized Map Panels -->
+  <!-- Panel 1 (Top-Left) -->
+  <rect x="80" y="80" width="160" height="145" rx="14" fill="#0d233a" stroke="#1e3a53" stroke-width="2.5"/>
+  <path d="M 95 160 Q 140 120 180 170 T 225 130" fill="none" stroke="#10b981" stroke-width="3" stroke-linecap="round"/>
+  <circle cx="160" cy="140" r="5" fill="#10b981"/>
+
+  <!-- Panel 2 (Top-Right) -->
+  <rect x="272" y="80" width="160" height="145" rx="14" fill="#0d233a" stroke="#1e3a53" stroke-width="2.5"/>
+  <rect x="290" y="100" width="40" height="35" rx="4" fill="#06b6d4" opacity="0.7"/>
+  <rect x="340" y="100" width="40" height="35" rx="4" fill="#3b82f6" opacity="0.8"/>
+  <rect x="290" y="145" width="40" height="35" rx="4" fill="#10b981" opacity="0.85"/>
+  <rect x="340" y="145" width="40" height="35" rx="4" fill="#ef4444" opacity="0.9"/>
+  <circle cx="352" cy="140" r="5" fill="#ef4444"/>
+
+  <!-- Panel 3 (Bottom-Left) -->
+  <rect x="80" y="255" width="160" height="145" rx="14" fill="#0d233a" stroke="#1e3a53" stroke-width="2.5"/>
+  <circle cx="120" cy="300" r="22" fill="#06b6d4" opacity="0.4"/>
+  <circle cx="180" cy="340" r="30" fill="#a855f7" opacity="0.4"/>
+  <circle cx="160" cy="315" r="5" fill="#06b6d4"/>
+
+  <!-- Panel 4 (Bottom-Right) -->
+  <rect x="272" y="255" width="160" height="145" rx="14" fill="#0d233a" stroke="#1e3a53" stroke-width="2.5"/>
+  <!-- Swipe Curtain Line -->
+  <line x1="352" y1="255" x2="352" y2="400" stroke="#ffffff" stroke-width="3"/>
+  <circle cx="352" cy="328" r="10" fill="#10b981" stroke="#ffffff" stroke-width="2"/>
+  <circle cx="352" cy="315" r="5" fill="#ffffff"/>
+
+  <!-- Synchronized Laser Crosshairs Linking All 4 Panels -->
+  <g stroke="#ef4444" stroke-width="1.5" stroke-dasharray="3 3" opacity="0.8">
+    <line x1="160" y1="80" x2="160" y2="400"/>
+    <line x1="352" y1="80" x2="352" y2="400"/>
+    <line x1="80" y1="140" x2="432" y2="140"/>
+    <line x1="80" y1="315" x2="432" y2="315"/>
+  </g>
+
+  <!-- Badge -->
+  <rect x="136" y="425" width="240" height="38" rx="19" fill="#0b1320" stroke="url(#glow)" stroke-width="2.5"/>
+  <text x="256" y="449" font-family="'Plus Jakarta Sans', 'Inter', sans-serif" font-size="14.5" font-weight="800" fill="#34d399" text-anchor="middle" letter-spacing="1.5">MULTILAYER &#183; SDK</text>
+</svg>
