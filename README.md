@@ -20,6 +20,16 @@
 
 ---
 
+## 🌐 Live Interactive Studio & Documentation
+
+Explore the **interactive multi-panel map simulator** and comprehensive reference manual:
+
+👉 **[https://yusufeminoglu.github.io/multilayer-sdk/](https://yusufeminoglu.github.io/multilayer-sdk/)**
+
+Try out real-time neon laser crosshair tracking, split-screen curtain swipe comparisons, and live choropleth classifiers directly in your browser.
+
+---
+
 ## 🌟 Overview
 
 **multilayer-sdk** (the headless Python core behind **02Multimap**) allows urban planners, spatial data scientists, and researchers to visualize, cross-analyze, and compare multiple spatial datasets side-by-side with millisecond synchronization.

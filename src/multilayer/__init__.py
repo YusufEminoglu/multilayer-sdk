@@ -24,7 +24,7 @@ from multilayer.symbology import (
     StyleRule,
 )
 
-__version__ = "0.1.0"
+__version__ = "0.1.1"
 __author__ = "Yusuf Eminoğlu"
 __email__ = "yusufeminoglu@gmail.com"
 
