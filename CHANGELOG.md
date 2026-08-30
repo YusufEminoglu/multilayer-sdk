@@ -1,9 +1,49 @@
 # Changelog
 
-All notable changes to **multilayer-sdk** will be documented in this file.
+All notable changes to this project will be documented in this file.
+
+## [0.8.0] - 2026-08-30
+### Added
+- **Quad-Synchronized 4-Panel Map Grid (`split_screen_quad_view.py`)**: Added `QuadSyncMap` rendering a 2x2 multi-basemap grid with linked center, zoom, and mouse reticle.
+- **Curved Animated Flow Arcs Visualizer (`flow_arrow_curved_layer.py`)**: Added `CurvedFlowMap` computing quadratic Bézier flight/commuter arcs and GeoJSON/MapLibre line layers.
+
+## [0.7.0] - 2026-08-30
+### Added
+- **3D Extruded Polygon Choropleth / Prism Maps (`spatial_choropleth_3d.py`)**: Added `Choropleth3DMap` rendering MapLibre GL 3D extruded prism polygons scaled by thematic indicators.
+- **Interactive Spyglass & Lens Comparer (`lens_magnifier_map.py`)**: Added `SpyglassCompareMap` with circular mouse-tracking magnifying glass layer overlay.
+
+## [0.6.0] - 2026-08-30
+### Added
+- **Hexagonal Spatial Aggregation Grid & Hexbin Heatmaps (`hexbin_aggregation.py`)**: Added `aggregate_points_to_hexbins` supporting COUNT, MEAN, SUM metrics and GeoJSON Polygon export.
+- **Scroll-Driven Narrative Scrollytelling Map (`storymap_scroller.py`)**: Added `StoryMapScroller` and `StoryChapter` creating interactive scroll-synchronized camera flyovers.
+
+## [0.5.0] - 2026-08-30
+### Added
+- **Animated Vector Particle Flow Map (`particle_layer.py`)**: Added `ParticleFlowMap` and `FlowParticleConfig` with Canvas/WebGL particle animations.
+- **Spatial Curtain Split-Slider Reveal Map (`curtain_map.py`)**: Added `CurtainMap` with interactive synchronized side-by-side curtain wipe reveal.
+
+## [0.4.0] - 2026-08-30
+
+### Added
+- **3D Globe & Synchronized Terrain Viewer (`globe3d.py`)**: Added `Globe3DMap` and `TerrainPanel3D` for multi-viewport WebGL 3D terrain exploration.
+- **Interactive Spatial Radius Query Tool (`spatial_query.py`)**: Added `RadialSearchMap` with draggable radius controls and live KPI aggregation.
+- **Synchronized Difference Map (`diff_map.py`)**: Added `DiffMap` for visual side-by-side / overlay change comparison.
+- **Multi-Page Cartographic Atlas Generator (`atlas_generator.py`)**: Added `MultiPageAtlas` grid index and sheet layout generator.
+
+## [0.2.0] - 2026-08-30
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
+
+## [0.2.0] - 2026-08-30
+
+### Added
+- **Time-Series Map Animator & Scenario Player (`timeline.py`)**:
+  - `TimelineMap` & `TimeFrame`: Multi-step scenario and temporal progression deck.
+  - Interactive playback controls: Play/Pause, variable speed (FPS), step buttons, interactive time scrubber bar, and active timestamp badge overlays.
+- **Cross-Filtering Interactive Dashboard Builder (`dashboard.py`)**:
+  - `InteractiveDashboard`: Synchronizes multi-panel maps with real-time sidebar range/category filters and metric KPI cards (`MetricCard`, `FilterWidget`).
+  - Dynamic on-the-fly aggregations (Sum, Mean, Min, Max, Count) connected directly to filtered GeoJSON features and interactive popups.
 
 ## [0.1.0] - 2026-08-26
 

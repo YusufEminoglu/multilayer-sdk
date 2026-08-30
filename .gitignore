@@ -55,3 +55,13 @@ ENV/
 .vscode/
 *.swp
 *.swo
+
+__pycache__/
+*.py[cod]
+*.class
+dist/
+build/
+*.egg-info/
+.pytest_cache/
+.coverage
+htmlcov/
