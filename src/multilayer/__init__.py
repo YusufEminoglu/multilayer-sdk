@@ -5,6 +5,11 @@ multilayer — Pure-Python Synchronized Multi-Panel Map Visualization & Spatial 
 
 from __future__ import annotations
 
+from multilayer.animated_temporal_slider_map import (
+    TemporalRangeSliderMap,
+    TimeSliderFrame,
+    export_time_slider_html,
+)
 from multilayer.atlas_generator import AtlasGridSheet, MultiPageAtlas
 from multilayer.core import MultiMap, Panel, SwipeMap, create_multimap
 from multilayer.curtain_map import CurtainMap
@@ -27,6 +32,11 @@ from multilayer.particle_layer import FlowParticleConfig, ParticleFlowMap
 from multilayer.spatial_choropleth_3d import Choropleth3DMap, PrismPolygon3D
 from multilayer.spatial_query import RadialSearchMap
 from multilayer.split_screen_quad_view import QuadPanelConfig, QuadSyncMap
+from multilayer.split_view_roller_map import (
+    RollerAngleMode,
+    RollerCurtainMap,
+    render_roller_map_html,
+)
 from multilayer.storymap_scroller import StoryChapter, StoryMapScroller
 from multilayer.symbology import (
     CategoricalStyle,
@@ -38,7 +48,7 @@ from multilayer.symbology import (
 )
 from multilayer.timeline import TimeFrame, TimelineMap
 
-__version__ = "0.8.0"
+__version__ = "0.9.0"
 __author__ = "Yusuf Eminoğlu"
 __email__ = "yusufeminoglu@gmail.com"
 
@@ -80,6 +90,14 @@ __all__ = [
     # Curved Animated Flow Arcs
     "CurvedFlowMap",
     "FlowArc3D",
+    # Temporal Range Slider Map
+    "TemporalRangeSliderMap",
+    "TimeSliderFrame",
+    "export_time_slider_html",
+    # Angle-Adjustable Roller Curtain Map
+    "RollerCurtainMap",
+    "RollerAngleMode",
+    "render_roller_map_html",
     "GridLayout",
     "GridPreset",
     "Layer",

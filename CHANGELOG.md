@@ -2,6 +2,11 @@
 
 All notable changes to this project will be documented in this file.
 
+## [0.9.0] - 2026-08-30
+### Added
+- **Interactive Time-Series Temporal Range Slider Map (`animated_temporal_slider_map.py`)**: Added `TemporalRangeSliderMap` for interactive time-lapse map frame playback and metric charting.
+- **Angle-Adjustable Roller Curtain Map Comparer (`split_view_roller_map.py`)**: Added `RollerCurtainMap` supporting vertical, horizontal, diagonal, and circular aperture layer wipe comparisons.
+
 ## [0.8.0] - 2026-08-30
 ### Added
 - **Quad-Synchronized 4-Panel Map Grid (`split_screen_quad_view.py`)**: Added `QuadSyncMap` rendering a 2x2 multi-basemap grid with linked center, zoom, and mouse reticle.
