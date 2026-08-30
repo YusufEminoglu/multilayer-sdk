@@ -2,6 +2,11 @@
 
 All notable changes to this project will be documented in this file.
 
+## [0.10.0] - 2026-08-30
+### Added
+- **2D 3x3 Bivariate Matrix Choropleth Map Visualizer (`bivariate_choropleth_map.py`)**: Added `BivariateChoroplethMap` for dual-variable spatial correlation analytics and dynamic 3x3 matrix legends.
+- **Animated WebGL Vector Field Wind & Ocean Streamline Canvas (`vector_wind_streamline_animator.py`)**: Added `WindParticleFieldMap` animating meteorological velocity fields.
+
 ## [0.9.0] - 2026-08-30
 ### Added
 - **Interactive Time-Series Temporal Range Slider Map (`animated_temporal_slider_map.py`)**: Added `TemporalRangeSliderMap` for interactive time-lapse map frame playback and metric charting.

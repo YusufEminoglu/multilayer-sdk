@@ -48,7 +48,16 @@ from multilayer.symbology import (
 )
 from multilayer.timeline import TimeFrame, TimelineMap
 
-__version__ = "0.9.0"
+from .bivariate_choropleth_map import (
+    BivariateChoroplethMap,
+    BivariateMatrixColorRamp,
+)
+from .vector_wind_streamline_animator import (
+    WindParticleFieldMap,
+    WindParticleParams,
+)
+
+__version__ = "0.10.0"
 __author__ = "Yusuf Eminoğlu"
 __email__ = "yusufeminoglu@gmail.com"
 
@@ -98,6 +107,12 @@ __all__ = [
     "RollerCurtainMap",
     "RollerAngleMode",
     "render_roller_map_html",
+    # 2D 3x3 Bivariate Matrix Choropleth Map
+    "BivariateChoroplethMap",
+    "BivariateMatrixColorRamp",
+    # WebGL Wind & Streamline Particle Field
+    "WindParticleFieldMap",
+    "WindParticleParams",
     "GridLayout",
     "GridPreset",
     "Layer",
