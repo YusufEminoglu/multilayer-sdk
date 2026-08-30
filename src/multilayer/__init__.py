@@ -48,6 +48,14 @@ from multilayer.symbology import (
 )
 from multilayer.timeline import TimeFrame, TimelineMap
 
+from .animated_pulse_radar_poi_map import (
+    PulseRadarPoiMap,
+    RadarPulseConfig,
+)
+from .matrix_proximity_heatmap_grid import (
+    ProximityMatrixHeatmapMap,
+    ProximityZoneParams,
+)
 from .elevation_contour_relief_map import (
     ContourIntervalConfig,
     HypsoTintedReliefMap,
@@ -65,7 +73,7 @@ from .vector_wind_streamline_animator import (
     WindParticleParams,
 )
 
-__version__ = "0.11.0"
+__version__ = "0.12.0"
 __author__ = "Yusuf Eminoğlu"
 __email__ = "yusufeminoglu@gmail.com"
 
@@ -127,6 +135,12 @@ __all__ = [
     # Hypso-Tinted Topographic Relief & Dynamic Contours
     "HypsoTintedReliefMap",
     "ContourIntervalConfig",
+    # Distance Proximity Matrix & Heatmap Grid
+    "ProximityMatrixHeatmapMap",
+    "ProximityZoneParams",
+    # Animated Radar Pulse & Ripple POI Beacons
+    "PulseRadarPoiMap",
+    "RadarPulseConfig",
     "GridLayout",
     "GridPreset",
     "Layer",

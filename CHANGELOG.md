@@ -2,6 +2,11 @@
 
 All notable changes to this project will be documented in this file.
 
+## [0.12.0] - 2026-08-30
+### Added
+- **Multi-Layer Distance Proximity Matrix & Heatmap Grid (`matrix_proximity_heatmap_grid.py`)**: Added `ProximityMatrixHeatmapMap` for multi-facility Euclidean distance rasterization and zone thresholds.
+- **Animated Dynamic Radar Pulse & Ripple POI Beacon Visualizer (`animated_pulse_radar_poi_map.py`)**: Added `PulseRadarPoiMap` generating animated beacon pulses and sonar ripples on POIs.
+
 ## [0.11.0] - 2026-08-30
 ### Added
 - **Multi-Modal Radial Travel Isochrone Bubble Map (`isochrone_travel_bubble_map.py`)**: Added `TravelIsochroneBubbleMap` generating multi-cutoff reachability rings and popup time indicators.
