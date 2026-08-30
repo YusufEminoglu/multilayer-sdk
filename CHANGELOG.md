@@ -2,6 +2,11 @@
 
 All notable changes to this project will be documented in this file.
 
+## [0.11.0] - 2026-08-30
+### Added
+- **Multi-Modal Radial Travel Isochrone Bubble Map (`isochrone_travel_bubble_map.py`)**: Added `TravelIsochroneBubbleMap` generating multi-cutoff reachability rings and popup time indicators.
+- **Hypso-Tinted Topographic Relief & Dynamic Contour Layer (`elevation_contour_relief_map.py`)**: Added `HypsoTintedReliefMap` styling index and minor elevation contour lines.
+
 ## [0.10.0] - 2026-08-30
 ### Added
 - **2D 3x3 Bivariate Matrix Choropleth Map Visualizer (`bivariate_choropleth_map.py`)**: Added `BivariateChoroplethMap` for dual-variable spatial correlation analytics and dynamic 3x3 matrix legends.

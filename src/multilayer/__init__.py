@@ -48,6 +48,14 @@ from multilayer.symbology import (
 )
 from multilayer.timeline import TimeFrame, TimelineMap
 
+from .elevation_contour_relief_map import (
+    ContourIntervalConfig,
+    HypsoTintedReliefMap,
+)
+from .isochrone_travel_bubble_map import (
+    IsochroneBandParams,
+    TravelIsochroneBubbleMap,
+)
 from .bivariate_choropleth_map import (
     BivariateChoroplethMap,
     BivariateMatrixColorRamp,
@@ -57,7 +65,7 @@ from .vector_wind_streamline_animator import (
     WindParticleParams,
 )
 
-__version__ = "0.10.0"
+__version__ = "0.11.0"
 __author__ = "Yusuf Eminoğlu"
 __email__ = "yusufeminoglu@gmail.com"
 
@@ -113,6 +121,12 @@ __all__ = [
     # WebGL Wind & Streamline Particle Field
     "WindParticleFieldMap",
     "WindParticleParams",
+    # Multi-Modal Isochrone Travel Bubble Map
+    "TravelIsochroneBubbleMap",
+    "IsochroneBandParams",
+    # Hypso-Tinted Topographic Relief & Dynamic Contours
+    "HypsoTintedReliefMap",
+    "ContourIntervalConfig",
     "GridLayout",
     "GridPreset",
     "Layer",
