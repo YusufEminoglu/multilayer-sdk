@@ -9,8 +9,8 @@
 [![PyPI Version](https://img.shields.io/pypi/v/multilayer-sdk.svg?color=10b981&label=PyPI%20package)](https://pypi.org/project/multilayer-sdk/)
 [![Python Versions](https://img.shields.io/pypi/pyversions/multilayer-sdk.svg?color=06b6d4)](https://pypi.org/project/multilayer-sdk/)
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
-[![CI](https://github.com/YusufEminoglu/multilayer-sdk/actions/workflows/ci.yml/badge.svg)](https://github.com/YusufEminoglu/multilayer-sdk/actions)
-[![Documentation](https://img.shields.io/badge/Docs-GitHub%20Pages-blueviolet?logo=github)](https://yusufeminoglu.github.io/multilayer-sdk/)
+[![CI](https://gitlab.com/geospacephilo/multilayer-sdk/actions/workflows/ci.yml/badge.svg)](https://gitlab.com/geospacephilo/multilayer-sdk/actions)
+[![Documentation](https://img.shields.io/badge/Docs-GitLab%20Pages-blueviolet?logo=github)](https://yusufeminoglu.github.io/multilayer-sdk/)
 
 <br/>
 
@@ -151,7 +151,7 @@ If you use **multilayer-sdk** in scientific publications, planning projects, or 
   year      = {2026},
   publisher = {PyPI - Python Package Index},
   version   = {0.1.0},
-  url       = {https://github.com/YusufEminoglu/multilayer-sdk}
+  url       = {https://gitlab.com/geospacephilo/multilayer-sdk}
 }
 ```
 

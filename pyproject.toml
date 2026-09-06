@@ -64,11 +64,11 @@ dev = [
 multilayer = "multilayer.cli:main"
 
 [project.urls]
-Homepage = "https://github.com/YusufEminoglu/multilayer-sdk"
-Repository = "https://github.com/YusufEminoglu/multilayer-sdk"
-Issues = "https://github.com/YusufEminoglu/multilayer-sdk/issues"
-Documentation = "https://yusufeminoglu.github.io/multilayer-sdk/"
-Changelog = "https://github.com/YusufEminoglu/multilayer-sdk/blob/main/CHANGELOG.md"
+Homepage = "https://geophilo.com/"
+Repository = "https://gitlab.com/geospacephilo/multilayer-sdk"
+Issues = "https://gitlab.com/geospacephilo/multilayer-sdk/-/issues"
+Documentation = "https://geophilo.com/"
+Changelog = "https://gitlab.com/geospacephilo/multilayer-sdk/-/blob/main/CHANGELOG.md"
 
 [tool.setuptools]
 package-dir = {"" = "src"}
