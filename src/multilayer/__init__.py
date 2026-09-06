@@ -73,7 +73,7 @@ from .vector_wind_streamline_animator import (
     WindParticleParams,
 )
 
-__version__ = "0.12.0"
+__version__ = "0.12.1"
 __author__ = "Yusuf Eminoğlu"
 __email__ = "yusufeminoglu@gmail.com"
 

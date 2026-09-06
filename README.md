@@ -1,6 +1,6 @@
 <div align="center">
 
-<img src="docs/icons/logo.svg" width="128" height="128" alt="multilayer-sdk Logo" style="filter: drop-shadow(0 12px 24px rgba(16,185,129,0.3));"/>
+<img src="https://geophilo.com/assets/sdk_icons/multilayer_sdk.svg" width="128" height="128" alt="multilayer-sdk Logo" style="filter: drop-shadow(0 12px 24px rgba(16,185,129,0.3));"/>
 
 # multilayer-sdk
 
@@ -9,12 +9,12 @@
 [![PyPI Version](https://img.shields.io/pypi/v/multilayer-sdk.svg?color=10b981&label=PyPI%20package)](https://pypi.org/project/multilayer-sdk/)
 [![Python Versions](https://img.shields.io/pypi/pyversions/multilayer-sdk.svg?color=06b6d4)](https://pypi.org/project/multilayer-sdk/)
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
-[![CI](https://gitlab.com/geospacephilo/multilayer-sdk/actions/workflows/ci.yml/badge.svg)](https://gitlab.com/geospacephilo/multilayer-sdk/actions)
-[![Documentation](https://img.shields.io/badge/Docs-GitLab%20Pages-blueviolet?logo=github)](https://yusufeminoglu.github.io/multilayer-sdk/)
+
+[![Documentation](https://img.shields.io/badge/docs-GEOPHILO-10b981.svg)](https://geophilo.com/)
 
 <br/>
 
-<img src="docs/assets/hero.svg" width="100%" alt="multilayer-sdk Architecture"/>
+<img src="https://geophilo.com/assets/sdk_icons/multilayer_sdk.svg" width="100%" alt="multilayer-sdk Architecture"/>
 
 </div>
 
@@ -24,7 +24,7 @@
 
 Explore the **interactive multi-panel map simulator** and comprehensive reference manual:
 
-👉 **[https://yusufeminoglu.github.io/multilayer-sdk/](https://yusufeminoglu.github.io/multilayer-sdk/)**
+👉 **[https://geophilo.com/](https://geophilo.com/)**
 
 Try out real-time neon laser crosshair tracking, split-screen curtain swipe comparisons, and live choropleth classifiers directly in your browser.
 
