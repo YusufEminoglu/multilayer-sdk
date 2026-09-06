@@ -10,7 +10,7 @@
 [![Python Versions](https://img.shields.io/pypi/pyversions/multilayer-sdk.svg?color=06b6d4)](https://pypi.org/project/multilayer-sdk/)
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
 
-[![Documentation](https://img.shields.io/badge/docs-GEOPHILO-10b981.svg)](https://geophilo.com/)
+[![Documentation](https://img.shields.io/badge/docs-GEOPHILO-10b981.svg)](https://geophilo.com/multilayer-sdk/)
 
 <br/>
 
@@ -24,7 +24,7 @@
 
 Explore the **interactive multi-panel map simulator** and comprehensive reference manual:
 
-👉 **[https://geophilo.com/](https://geophilo.com/)**
+👉 **[https://geophilo.com/multilayer-sdk/](https://geophilo.com/multilayer-sdk/)**
 
 Try out real-time neon laser crosshair tracking, split-screen curtain swipe comparisons, and live choropleth classifiers directly in your browser.
 

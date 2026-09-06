@@ -67,7 +67,7 @@ multilayer = "multilayer.cli:main"
 Homepage = "https://geophilo.com/"
 Repository = "https://gitlab.com/geospacephilo/multilayer-sdk"
 Issues = "https://gitlab.com/geospacephilo/multilayer-sdk/-/issues"
-Documentation = "https://geophilo.com/"
+Documentation = "https://geophilo.com/multilayer-sdk/"
 Changelog = "https://gitlab.com/geospacephilo/multilayer-sdk/-/blob/main/CHANGELOG.md"
 
 [tool.setuptools]
