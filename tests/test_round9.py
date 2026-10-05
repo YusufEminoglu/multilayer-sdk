@@ -9,9 +9,7 @@ from pathlib import Path
 
 from multilayer import (
     BivariateChoroplethMap,
-    BivariateMatrixColorRamp,
     WindParticleFieldMap,
-    WindParticleParams,
 )
 
 

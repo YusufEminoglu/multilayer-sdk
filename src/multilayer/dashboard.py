@@ -5,9 +5,8 @@ from __future__ import annotations
 
 import html
 import json
-from dataclasses import dataclass, field
+from dataclasses import dataclass
 from pathlib import Path
-from typing import Any, Sequence
 
 from .grid import GridLayout
 from .layers import VectorLayer, get_tile_provider
@@ -127,7 +126,7 @@ class InteractiveDashboard:
 
         cards_json = json.dumps([c.to_dict() for c in self.metric_cards], ensure_ascii=False)
         filters_json = json.dumps([f.to_dict() for f in self.filters], ensure_ascii=False)
-        
+
         # Serialize panel layer setup
         panels_data = {}
         for p_idx, lyrs in self.panel_layers.items():

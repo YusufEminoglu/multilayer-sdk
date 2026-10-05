@@ -7,7 +7,7 @@ import tempfile
 import unittest
 from pathlib import Path
 
-from multilayer import CurtainMap, FlowParticleConfig, ParticleFlowMap
+from multilayer import CurtainMap, ParticleFlowMap
 
 
 class TestMultilayerRound4(unittest.TestCase):

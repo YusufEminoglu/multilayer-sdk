@@ -4,10 +4,9 @@
 from __future__ import annotations
 
 import json
-import math
 from dataclasses import dataclass, field
 from pathlib import Path
-from typing import Any, Sequence
+from typing import Any
 
 
 @dataclass
@@ -57,7 +56,6 @@ class CurvedFlowMap:
 
         d_lat = lat2 - lat1
         d_lon = lon2 - lon1
-        dist = math.hypot(d_lat, d_lon)
 
         # Control point elevated perpendicularly
         ctrl_lat = mid_lat - (d_lon * 0.2)

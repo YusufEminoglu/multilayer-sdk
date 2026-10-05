@@ -8,12 +8,10 @@ import unittest
 from pathlib import Path
 
 from multilayer import (
-    AtlasGridSheet,
     DiffMap,
     Globe3DMap,
     MultiPageAtlas,
     RadialSearchMap,
-    SpatialDiffResult,
     TerrainPanel3D,
 )
 

@@ -3,10 +3,8 @@
 
 from __future__ import annotations
 
-import json
 from dataclasses import dataclass, field
 from pathlib import Path
-from typing import Any
 
 
 @dataclass
@@ -72,7 +70,7 @@ class SpyglassCompareMap:
       lens.style.display = 'block';
       lens.style.left = e.containerPoint.x + 'px';
       lens.style.top = e.containerPoint.y + 'px';
-      
+
       const lensMapDiv = document.getElementById('lens-map');
       lensMapDiv.style.left = (-e.containerPoint.x + {self.lens_config.radius_pixels}) + 'px';
       lensMapDiv.style.top = (-e.containerPoint.y + {self.lens_config.radius_pixels}) + 'px';

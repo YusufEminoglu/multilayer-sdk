@@ -8,9 +8,7 @@ import unittest
 from pathlib import Path
 
 from multilayer import (
-    ContourIntervalConfig,
     HypsoTintedReliefMap,
-    IsochroneBandParams,
     TravelIsochroneBubbleMap,
 )
 

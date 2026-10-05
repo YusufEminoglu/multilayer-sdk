@@ -7,7 +7,7 @@ import html
 import json
 from dataclasses import dataclass, field
 from pathlib import Path
-from typing import Any, Sequence
+from typing import Any
 
 from .grid import GridLayout
 from .layers import VectorLayer, get_tile_provider
@@ -158,7 +158,7 @@ class TimelineMap:
         const panelCount = {panel_count};
         const tileUrl = "{tile_prov.url_template}";
         const tileAttr = "{tile_prov.attribution}";
-        
+
         const maps = [];
         const geojsonLayers = Array.from({{ length: panelCount }}, () => []);
         let currentFrameIdx = 0;

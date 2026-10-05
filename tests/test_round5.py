@@ -9,7 +9,6 @@ from pathlib import Path
 
 from multilayer import (
     HexbinHeatmapLayer,
-    StoryChapter,
     StoryMapScroller,
     aggregate_points_to_hexbins,
 )

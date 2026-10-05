@@ -18,7 +18,11 @@ from multilayer.diff_map import DiffMap, SpatialDiffResult
 from multilayer.flow_arrow_curved_layer import CurvedFlowMap, FlowArc3D
 from multilayer.globe3d import Globe3DMap, TerrainPanel3D
 from multilayer.grid import GridLayout, GridPreset
-from multilayer.hexbin_aggregation import HexagonCell, HexbinHeatmapLayer, aggregate_points_to_hexbins
+from multilayer.hexbin_aggregation import (
+    HexagonCell,
+    HexbinHeatmapLayer,
+    aggregate_points_to_hexbins,
+)
 from multilayer.layers import (
     Layer,
     RasterLayer,
@@ -52,9 +56,9 @@ from .animated_pulse_radar_poi_map import (
     PulseRadarPoiMap,
     RadarPulseConfig,
 )
-from .matrix_proximity_heatmap_grid import (
-    ProximityMatrixHeatmapMap,
-    ProximityZoneParams,
+from .bivariate_choropleth_map import (
+    BivariateChoroplethMap,
+    BivariateMatrixColorRamp,
 )
 from .elevation_contour_relief_map import (
     ContourIntervalConfig,
@@ -64,9 +68,9 @@ from .isochrone_travel_bubble_map import (
     IsochroneBandParams,
     TravelIsochroneBubbleMap,
 )
-from .bivariate_choropleth_map import (
-    BivariateChoroplethMap,
-    BivariateMatrixColorRamp,
+from .matrix_proximity_heatmap_grid import (
+    ProximityMatrixHeatmapMap,
+    ProximityZoneParams,
 )
 from .vector_wind_streamline_animator import (
     WindParticleFieldMap,

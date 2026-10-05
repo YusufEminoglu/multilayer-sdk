@@ -9,7 +9,6 @@ from pathlib import Path
 
 from multilayer import (
     CurvedFlowMap,
-    FlowArc3D,
     QuadPanelConfig,
     QuadSyncMap,
 )

@@ -10,7 +10,6 @@ from pathlib import Path
 from multilayer import (
     Choropleth3DMap,
     LensConfig,
-    PrismPolygon3D,
     SpyglassCompareMap,
 )
 

@@ -6,7 +6,7 @@ from __future__ import annotations
 import json
 from dataclasses import dataclass, field
 from pathlib import Path
-from typing import Any, Sequence
+from typing import Any
 
 
 @dataclass
@@ -78,7 +78,6 @@ class BivariateChoroplethMap:
     def to_html(self) -> str:
         self.classify_and_color_features()
         data_json = json.dumps({"type": "FeatureCollection", "features": self.features})
-        matrix_json = json.dumps(self.color_ramp.matrix_3x3)
 
         return f"""<!DOCTYPE html>
 <html>

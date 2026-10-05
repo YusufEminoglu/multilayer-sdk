@@ -9,7 +9,6 @@ from pathlib import Path
 
 from multilayer import (
     ProximityMatrixHeatmapMap,
-    ProximityZoneParams,
     PulseRadarPoiMap,
     RadarPulseConfig,
 )

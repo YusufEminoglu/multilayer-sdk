@@ -3,10 +3,9 @@
 
 from __future__ import annotations
 
-import json
 from dataclasses import dataclass, field
 from pathlib import Path
-from typing import Any, Sequence
+from typing import Any
 
 
 @dataclass
@@ -23,7 +22,6 @@ class RadialSearchMap:
         self.geojson_target_layers.append(geojson_data)
 
     def to_html(self, title: str = "Interactive Spatial Radius Filter") -> str:
-        layers_json = json.dumps(self.geojson_target_layers)
         return f"""<!DOCTYPE html>
 <html lang="en">
 <head>
