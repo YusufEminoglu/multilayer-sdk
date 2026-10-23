@@ -21,6 +21,7 @@ class CurtainMap:
     slider_initial_position_percent: float = 50.0
 
     def render_html(self) -> str:
+        """Render the curtain comparison map as a self-contained HTML document."""
         return f"""<!DOCTYPE html>
 <html lang="en">
 <head>
@@ -89,6 +90,7 @@ class CurtainMap:
 </html>"""
 
     def save_html(self, output_path: str | Path) -> Path:
+        """Write the rendered curtain map to ``output_path`` and return the path."""
         out = Path(output_path)
         out.parent.mkdir(parents=True, exist_ok=True)
         out.write_text(self.render_html(), encoding="utf-8")

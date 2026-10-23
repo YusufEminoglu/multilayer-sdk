@@ -27,10 +27,20 @@ class MultiPageAtlas:
     title: str = "Regional Planning Atlas"
     rows: int = 2
     cols: int = 3
-    bounds: tuple[float, float, float, float] = (40.9, 28.8, 41.1, 29.2)  # (min_lat, min_lon, max_lat, max_lon)
+    bounds: tuple[float, float, float, float] = (
+        40.9,
+        28.8,
+        41.1,
+        29.2,
+    )  # (min_lat, min_lon, max_lat, max_lon)
     sheets: list[AtlasGridSheet] = field(default_factory=list)
 
     def generate_grid_index(self) -> list[AtlasGridSheet]:
+        """Generate the grid of atlas sheets covering ``bounds`` row-major from north-west.
+
+        Returns:
+            The generated sheets, also stored on ``self.sheets``.
+        """
         min_lat, min_lon, max_lat, max_lon = self.bounds
         lat_step = (max_lat - min_lat) / self.rows
         lon_step = (max_lon - min_lon) / self.cols
@@ -49,7 +59,7 @@ class MultiPageAtlas:
                 sheets.append(
                     AtlasGridSheet(
                         sheet_number=sheet_num,
-                        sheet_name=f"Sheet {sheet_num:02d} - [{chr(65+r)}{c+1}]",
+                        sheet_name=f"Sheet {sheet_num:02d} - [{chr(65 + r)}{c + 1}]",
                         min_lat=round(s_min_lat, 5),
                         min_lon=round(s_min_lon, 5),
                         max_lat=round(s_max_lat, 5),
@@ -77,18 +87,20 @@ class MultiPageAtlas:
                     [s.min_lon, s.min_lat],
                 ]
             ]
-            features.append({
-                "type": "Feature",
-                "properties": {
-                    "sheet_number": s.sheet_number,
-                    "sheet_name": s.sheet_name,
-                    "scale": f"1:{s.scale_representative_fraction:,}",
-                },
-                "geometry": {
-                    "type": "Polygon",
-                    "coordinates": poly_coords,
-                },
-            })
+            features.append(
+                {
+                    "type": "Feature",
+                    "properties": {
+                        "sheet_number": s.sheet_number,
+                        "sheet_name": s.sheet_name,
+                        "scale": f"1:{s.scale_representative_fraction:,}",
+                    },
+                    "geometry": {
+                        "type": "Polygon",
+                        "coordinates": poly_coords,
+                    },
+                }
+            )
 
         return {
             "type": "FeatureCollection",

@@ -25,7 +25,13 @@ def sample_geojson():
                 "geometry": {
                     "type": "Polygon",
                     "coordinates": [
-                        [[27.13, 38.41], [27.15, 38.41], [27.15, 38.43], [27.13, 38.43], [27.13, 38.41]]
+                        [
+                            [27.13, 38.41],
+                            [27.15, 38.41],
+                            [27.15, 38.43],
+                            [27.13, 38.43],
+                            [27.13, 38.41],
+                        ]
                     ],
                 },
                 "properties": {"id": 1, "name": "Zone A", "population": 12000, "risk_score": 0.8},
@@ -35,7 +41,13 @@ def sample_geojson():
                 "geometry": {
                     "type": "Polygon",
                     "coordinates": [
-                        [[27.16, 38.44], [27.18, 38.44], [27.18, 38.46], [27.16, 38.46], [27.16, 38.44]]
+                        [
+                            [27.16, 38.44],
+                            [27.18, 38.44],
+                            [27.18, 38.46],
+                            [27.16, 38.46],
+                            [27.16, 38.44],
+                        ]
                     ],
                 },
                 "properties": {"id": 2, "name": "Zone B", "population": 4500, "risk_score": 0.3},
@@ -75,12 +87,22 @@ def test_timeline_map_creation_and_export(sample_geojson):
 def test_interactive_dashboard_creation_and_export(sample_geojson):
     v = VectorLayer.from_geojson(sample_geojson, name="Urban Districts")
 
-    dash = InteractiveDashboard(grid="1x2", title="Urban Resilience Master Dashboard", basemap="carto-dark")
+    dash = InteractiveDashboard(
+        grid="1x2", title="Urban Resilience Master Dashboard", basemap="carto-dark"
+    )
     dash.add_layer(0, v)
     dash.add_layer(1, v)
 
-    dash.add_metric_card(title="Total Population", property_key="population", aggregation="sum", unit="people", icon="👥")
-    dash.add_metric_card(title="Avg Risk", property_key="risk_score", aggregation="mean", unit="idx", icon="⚠️")
+    dash.add_metric_card(
+        title="Total Population",
+        property_key="population",
+        aggregation="sum",
+        unit="people",
+        icon="👥",
+    )
+    dash.add_metric_card(
+        title="Avg Risk", property_key="risk_score", aggregation="mean", unit="idx", icon="⚠️"
+    )
 
     dash.add_filter(property_key="population", label="Min Population Filter", filter_type="range")
     dash.add_filter(property_key="risk_score", label="Min Risk Score", filter_type="range")

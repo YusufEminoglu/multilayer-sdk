@@ -28,6 +28,7 @@ class HexbinHeatmapLayer:
     cells: list[HexagonCell]
 
     def to_geojson(self) -> dict[str, Any]:
+        """Export the hexagon cells as a GeoJSON polygon FeatureCollection."""
         features = []
         for c in self.cells:
             # Leaflet / GeoJSON expects [lon, lat]
@@ -36,19 +37,21 @@ class HexbinHeatmapLayer:
             if poly_coords and poly_coords[0] != poly_coords[-1]:
                 poly_coords.append(poly_coords[0])
 
-            features.append({
-                "type": "Feature",
-                "properties": {
-                    "hex_id": c.hex_id,
-                    "count": c.point_count,
-                    "value": round(c.aggregated_metric_value, 2),
-                    "fill": c.color_hex,
-                },
-                "geometry": {
-                    "type": "Polygon",
-                    "coordinates": [poly_coords],
-                },
-            })
+            features.append(
+                {
+                    "type": "Feature",
+                    "properties": {
+                        "hex_id": c.hex_id,
+                        "count": c.point_count,
+                        "value": round(c.aggregated_metric_value, 2),
+                        "fill": c.color_hex,
+                    },
+                    "geometry": {
+                        "type": "Polygon",
+                        "coordinates": [poly_coords],
+                    },
+                }
+            )
         return {"type": "FeatureCollection", "features": features}
 
 

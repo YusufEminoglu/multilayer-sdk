@@ -24,8 +24,18 @@ class TestMultilayerRound6(unittest.TestCase):
 
     def test_3d_choropleth_prism_map(self) -> None:
         c3d = Choropleth3DMap(title="Istanbul Population Density")
-        c3d.add_prism("District_Kadikoy", [(40.99, 29.02), (41.00, 29.02), (41.00, 29.04), (40.99, 29.04)], metric_value=450.0, height_scale=0.5)
-        c3d.add_prism("District_Besiktas", [(41.04, 29.00), (41.05, 29.00), (41.05, 29.02), (41.04, 29.02)], metric_value=320.0, height_scale=0.5)
+        c3d.add_prism(
+            "District_Kadikoy",
+            [(40.99, 29.02), (41.00, 29.02), (41.00, 29.04), (40.99, 29.04)],
+            metric_value=450.0,
+            height_scale=0.5,
+        )
+        c3d.add_prism(
+            "District_Besiktas",
+            [(41.04, 29.00), (41.05, 29.00), (41.05, 29.02), (41.04, 29.02)],
+            metric_value=320.0,
+            height_scale=0.5,
+        )
 
         self.assertEqual(len(c3d.prisms), 2)
         geojson = c3d.to_geojson()

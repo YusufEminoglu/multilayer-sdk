@@ -33,6 +33,7 @@ class DiffMap:
     title_b: str = "Modified / After"
 
     def to_html(self, title: str = "Spatial Layer Difference Visualizer") -> str:
+        """Render the side-by-side difference map as a standalone HTML document."""
         data_a = json.dumps(self.layer_a_geojson)
         data_b = json.dumps(self.layer_b_geojson)
 
@@ -82,6 +83,7 @@ class DiffMap:
 """
 
     def save_html(self, output_path: str | Path) -> Path:
+        """Write the rendered difference map to ``output_path`` and return the path."""
         out = Path(output_path)
         out.parent.mkdir(parents=True, exist_ok=True)
         out.write_text(self.to_html(), encoding="utf-8")

@@ -11,7 +11,9 @@ from typing import Any
 
 @dataclass
 class ProximityZoneParams:
-    distance_thresholds_meters: list[float] = field(default_factory=lambda: [250.0, 500.0, 1000.0, 2000.0])
+    distance_thresholds_meters: list[float] = field(
+        default_factory=lambda: [250.0, 500.0, 1000.0, 2000.0]
+    )
     color_palette: list[str] = field(
         default_factory=lambda: ["#1a9850", "#91cf60", "#d9ef8b", "#fee08b", "#fc8d59", "#d73027"]
     )
@@ -27,24 +29,54 @@ class ProximityMatrixHeatmapMap:
         center_lat_lon: tuple[float, float] = (41.0, 29.0),
         params: ProximityZoneParams | None = None,
     ) -> None:
+        """Initialize the proximity matrix heatmap map.
+
+        Args:
+            title: Map title rendered in the HTML document.
+            center_lat_lon: Initial view center as ``(lat, lon)``.
+            params: Optional distance thresholds, palette, and cell size.
+        """
         self.title = title
         self.center = center_lat_lon
         self.params = params or ProximityZoneParams()
         self.facilities: list[dict[str, Any]] = []
         self.grid_cells: list[dict[str, Any]] = []
 
-    def add_facility(self, facility_id: str, lat: float, lon: float, facility_type: str = "HOSPITAL") -> None:
-        self.facilities.append({"id": facility_id, "lat": float(lat), "lon": float(lon), "type": facility_type})
+    def add_facility(
+        self, facility_id: str, lat: float, lon: float, facility_type: str = "HOSPITAL"
+    ) -> None:
+        """Register a reference facility to measure proximity from.
+
+        Args:
+            facility_id: Unique facility identifier.
+            lat: Facility latitude in decimal degrees.
+            lon: Facility longitude in decimal degrees.
+            facility_type: Facility category label.
+        """
+        self.facilities.append(
+            {"id": facility_id, "lat": float(lat), "lon": float(lon), "type": facility_type}
+        )
 
     def add_grid_cell(self, cell_id: str, lat: float, lon: float, min_distance_m: float) -> None:
-        self.grid_cells.append({
-            "id": cell_id,
-            "lat": float(lat),
-            "lon": float(lon),
-            "min_dist_m": float(min_distance_m),
-        })
+        """Add a grid cell with its precomputed distance to the nearest facility.
+
+        Args:
+            cell_id: Unique cell identifier.
+            lat: Cell latitude in decimal degrees.
+            lon: Cell longitude in decimal degrees.
+            min_distance_m: Minimum distance to any facility, in metres.
+        """
+        self.grid_cells.append(
+            {
+                "id": cell_id,
+                "lat": float(lat),
+                "lon": float(lon),
+                "min_dist_m": float(min_distance_m),
+            }
+        )
 
     def to_html(self) -> str:
+        """Render the proximity heatmap grid as a standalone HTML document."""
         fac_json = json.dumps(self.facilities)
         grid_json = json.dumps(self.grid_cells)
         return f"""<!DOCTYPE html>
@@ -79,6 +111,7 @@ class ProximityMatrixHeatmapMap:
 </html>"""
 
     def save_html(self, output_path: str | Path) -> None:
+        """Write the rendered proximity map HTML to ``output_path``."""
         out = Path(output_path)
         out.parent.mkdir(parents=True, exist_ok=True)
         out.write_text(self.to_html(), encoding="utf-8")

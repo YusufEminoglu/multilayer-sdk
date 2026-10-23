@@ -54,10 +54,12 @@ class ColorRamp(str, Enum):
 
         # Interpolate between base colors
         def hex_to_rgb(h: str) -> tuple[int, int, int]:
+            """Convert a ``#rrggbb`` hex string to an ``(r, g, b)`` tuple."""
             h = h.lstrip("#")
             return int(h[0:2], 16), int(h[2:4], 16), int(h[4:6], 16)
 
         def rgb_to_hex(r: int, g: int, b: int) -> str:
+            """Convert ``(r, g, b)`` channels (clamped to 0-255) to a hex string."""
             return f"#{max(0, min(255, int(r))):02x}{max(0, min(255, int(g))):02x}{max(0, min(255, int(b))):02x}"
 
         base_rgb = [hex_to_rgb(c) for c in base]
@@ -189,6 +191,7 @@ class Choropleth:
 
         # Apply per-feature color
         def get_color(val: float) -> str:
+            """Return the palette color for the first break the value falls into."""
             for i, b in enumerate(breaks):
                 if val <= b:
                     return colors[i]

@@ -24,14 +24,25 @@ class QuadSyncMap:
     base_zoom: int = 13
     panels: list[QuadPanelConfig] = field(
         default_factory=lambda: [
-            QuadPanelConfig("Standard Street", "https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png"),
-            QuadPanelConfig("Satellite Imagery", "https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}"),
-            QuadPanelConfig("Dark Canvas", "https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png"),
-            QuadPanelConfig("Topographic Terrain", "https://{s}.tile.opentopomap.org/{z}/{x}/{y}.png"),
+            QuadPanelConfig(
+                "Standard Street",
+                "https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png",
+            ),
+            QuadPanelConfig(
+                "Satellite Imagery",
+                "https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}",
+            ),
+            QuadPanelConfig(
+                "Dark Canvas", "https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png"
+            ),
+            QuadPanelConfig(
+                "Topographic Terrain", "https://{s}.tile.opentopomap.org/{z}/{x}/{y}.png"
+            ),
         ]
     )
 
     def render_html(self) -> str:
+        """Render the 2x2 synchronized quad view as a standalone HTML document."""
         panel_divs = []
         js_inits = []
         for i, p in enumerate(self.panels[:4]):
@@ -94,6 +105,7 @@ class QuadSyncMap:
 </html>"""
 
     def save_html(self, output_path: str | Path) -> Path:
+        """Write the rendered quad view HTML to ``output_path`` and return the path."""
         out = Path(output_path)
         out.parent.mkdir(parents=True, exist_ok=True)
         out.write_text(self.render_html(), encoding="utf-8")

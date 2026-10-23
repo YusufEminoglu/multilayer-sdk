@@ -37,6 +37,16 @@ class StoryMapScroller:
         lon: float,
         zoom: int = 14,
     ) -> None:
+        """Append a narrative chapter with a camera target.
+
+        Args:
+            chapter_id: Unique chapter identifier.
+            title: Chapter heading.
+            narrative: Narrative body text (rendered as escaped HTML).
+            lat: Camera center latitude.
+            lon: Camera center longitude.
+            zoom: Camera zoom level.
+        """
         self.chapters.append(
             StoryChapter(
                 chapter_id=chapter_id,
@@ -49,16 +59,19 @@ class StoryMapScroller:
         )
 
     def render_html(self) -> str:
-        chapters_json = json.dumps([
-            {
-                "id": ch.chapter_id,
-                "title": ch.title,
-                "lat": ch.camera_center_lat,
-                "lon": ch.camera_center_lon,
-                "zoom": ch.camera_zoom,
-            }
-            for ch in self.chapters
-        ])
+        """Render the scrollytelling map as a standalone HTML document."""
+        chapters_json = json.dumps(
+            [
+                {
+                    "id": ch.chapter_id,
+                    "title": ch.title,
+                    "lat": ch.camera_center_lat,
+                    "lon": ch.camera_center_lon,
+                    "zoom": ch.camera_zoom,
+                }
+                for ch in self.chapters
+            ]
+        )
 
         cards_html = []
         for idx, ch in enumerate(self.chapters):
@@ -119,6 +132,7 @@ class StoryMapScroller:
 </html>"""
 
     def save_html(self, output_path: str | Path) -> Path:
+        """Write the rendered story map to ``output_path`` and return the path."""
         out = Path(output_path)
         out.parent.mkdir(parents=True, exist_ok=True)
         out.write_text(self.render_html(), encoding="utf-8")

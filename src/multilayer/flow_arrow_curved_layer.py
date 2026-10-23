@@ -37,6 +37,15 @@ class CurvedFlowMap:
         flow_volume: float,
         color_hex: str = "#f59e0b",
     ) -> None:
+        """Register an origin-destination flow arc.
+
+        Args:
+            flow_id: Unique flow identifier.
+            origin_lat_lon: Origin point as ``(lat, lon)``.
+            destination_lat_lon: Destination point as ``(lat, lon)``.
+            flow_volume: Flow magnitude controlling arc stroke width.
+            color_hex: Hex color for the rendered arc.
+        """
         self.flows.append(
             FlowArc3D(
                 flow_id=flow_id,
@@ -47,7 +56,19 @@ class CurvedFlowMap:
             )
         )
 
-    def _sample_bezier_arc(self, o: tuple[float, float], d: tuple[float, float], num_pts: int = 20) -> list[list[float]]:
+    def _sample_bezier_arc(
+        self, o: tuple[float, float], d: tuple[float, float], num_pts: int = 20
+    ) -> list[list[float]]:
+        """Sample a quadratic Bézier curve between two ``(lat, lon)`` points.
+
+        Args:
+            o: Origin point as ``(lat, lon)``.
+            d: Destination point as ``(lat, lon)``.
+            num_pts: Number of segments to sample.
+
+        Returns:
+            ``[lon, lat]`` coordinates along the arc.
+        """
         # Midpoint with perpendicular offset for visual curve
         lat1, lon1 = o
         lat2, lon2 = d
@@ -72,25 +93,29 @@ class CurvedFlowMap:
         return curve_pts
 
     def to_geojson(self) -> dict[str, Any]:
+        """Build a GeoJSON FeatureCollection of sampled flow arc LineStrings."""
         features = []
         for fl in self.flows:
             coords = self._sample_bezier_arc(fl.origin_lat_lon, fl.destination_lat_lon)
-            features.append({
-                "type": "Feature",
-                "properties": {
-                    "id": fl.flow_id,
-                    "volume": fl.flow_volume,
-                    "color": fl.color_hex,
-                    "stroke_width": max(1.5, min(8.0, fl.flow_volume * 0.5)),
-                },
-                "geometry": {
-                    "type": "LineString",
-                    "coordinates": coords,
-                },
-            })
+            features.append(
+                {
+                    "type": "Feature",
+                    "properties": {
+                        "id": fl.flow_id,
+                        "volume": fl.flow_volume,
+                        "color": fl.color_hex,
+                        "stroke_width": max(1.5, min(8.0, fl.flow_volume * 0.5)),
+                    },
+                    "geometry": {
+                        "type": "LineString",
+                        "coordinates": coords,
+                    },
+                }
+            )
         return {"type": "FeatureCollection", "features": features}
 
     def render_html(self) -> str:
+        """Render the flow arcs as a MapLibre GL standalone HTML document."""
         gj_str = json.dumps(self.to_geojson())
         return f"""<!DOCTYPE html>
 <html lang="en">
@@ -136,6 +161,7 @@ class CurvedFlowMap:
 </html>"""
 
     def save_html(self, output_path: str | Path) -> Path:
+        """Write the rendered flow map to ``output_path`` and return the path."""
         out = Path(output_path)
         out.parent.mkdir(parents=True, exist_ok=True)
         out.write_text(self.render_html(), encoding="utf-8")

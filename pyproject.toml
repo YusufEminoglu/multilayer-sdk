@@ -1,5 +1,5 @@
 [build-system]
-requires = ["setuptools>=61.0.0", "wheel"]
+requires = ["setuptools>=77.0.0", "wheel"]
 build-backend = "setuptools.build_meta"
 
 [project]
@@ -11,6 +11,7 @@ authors = [
 description = "Pure-Python Synchronized Multi-Panel Map Visualization, Proximity Matrix Heatmaps & Radar POIs."
 readme = "README.md"
 license = "MIT"
+license-files = ["LICENSE"]
 requires-python = ">=3.9"
 keywords = [
     "gis",
@@ -49,7 +50,9 @@ dependencies = []
 geo = [
     "shapely>=2.0.0",
     "geopandas>=0.12.0",
-    "matplotlib>=3.5.0",
+]
+notebook = [
+    "ipython>=7.0.0",
 ]
 dev = [
     "pytest>=7.0.0",
@@ -104,3 +107,8 @@ branch = true
 [tool.coverage.report]
 show_missing = true
 fail_under = 70
+exclude_lines = [
+    "pragma: no cover",
+    "if TYPE_CHECKING:",
+    "if __name__ == .__main__.:",
+]

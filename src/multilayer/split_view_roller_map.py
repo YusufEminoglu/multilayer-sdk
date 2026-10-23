@@ -26,6 +26,7 @@ class RollerCurtainMap:
     mode: RollerAngleMode = RollerAngleMode.DIAGONAL_45
 
     def to_html(self) -> str:
+        """Render the roller curtain map as a standalone HTML document."""
         return f"""<!DOCTYPE html>
 <html>
 <head>
@@ -54,6 +55,7 @@ class RollerCurtainMap:
 </html>"""
 
     def save_html(self, output_path: str | Path) -> Path:
+        """Write the rendered roller curtain map to ``output_path`` and return the path."""
         out = Path(output_path)
         out.parent.mkdir(parents=True, exist_ok=True)
         out.write_text(self.to_html(), encoding="utf-8")

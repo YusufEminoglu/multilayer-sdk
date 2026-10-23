@@ -26,6 +26,7 @@ class TileProvider(str, Enum):
 
     @property
     def url_template(self) -> str:
+        """XYZ tile URL template for this provider (empty for ``NONE``)."""
         templates = {
             TileProvider.OSM: "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
             TileProvider.CARTO_LIGHT: "https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png",
@@ -41,6 +42,7 @@ class TileProvider(str, Enum):
 
     @property
     def attribution(self) -> str:
+        """HTML attribution string required when using this provider's tiles."""
         attribs = {
             TileProvider.OSM: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
             TileProvider.CARTO_LIGHT: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> &copy; <a href="https://carto.com/attributions">CARTO</a>',
@@ -123,6 +125,7 @@ class TileLayer(Layer):
     opacity: float = 1.0
 
     def to_dict(self) -> dict[str, Any]:
+        """Serialize the tile layer configuration to a dictionary."""
         return {
             "type": "tile",
             "name": self.name,
@@ -135,6 +138,7 @@ class TileLayer(Layer):
         }
 
     def get_bounds(self) -> tuple[float, float, float, float] | None:
+        """Tile layers are unbounded, so this always returns ``None``."""
         return None
 
 
@@ -143,7 +147,9 @@ class VectorLayer(Layer):
     """Vector geometry layer supporting GeoJSON, GeoPandas, and shape dictionaries."""
 
     name: str = "Vector Layer"
-    data: dict[str, Any] = field(default_factory=lambda: {"type": "FeatureCollection", "features": []})
+    data: dict[str, Any] = field(
+        default_factory=lambda: {"type": "FeatureCollection", "features": []}
+    )
     fill_color: str = "#3388ff"
     fill_opacity: float = 0.6
     stroke_color: str = "#2255bb"
@@ -182,13 +188,25 @@ class VectorLayer(Layer):
         # Normalize to FeatureCollection
         if parsed.get("type") == "Feature":
             parsed = {"type": "FeatureCollection", "features": [parsed]}
-        elif parsed.get("type") in ["Point", "LineString", "Polygon", "MultiPoint", "MultiLineString", "MultiPolygon"]:
-            parsed = {"type": "FeatureCollection", "features": [{"type": "Feature", "geometry": parsed, "properties": {}}]}
+        elif parsed.get("type") in [
+            "Point",
+            "LineString",
+            "Polygon",
+            "MultiPoint",
+            "MultiLineString",
+            "MultiPolygon",
+        ]:
+            parsed = {
+                "type": "FeatureCollection",
+                "features": [{"type": "Feature", "geometry": parsed, "properties": {}}],
+            }
 
         return cls(name=name, data=parsed, **style_kwargs)
 
     @classmethod
-    def from_geodataframe(cls, gdf: Any, name: str = "GeoDataFrame Layer", **style_kwargs: Any) -> VectorLayer:
+    def from_geodataframe(
+        cls, gdf: Any, name: str = "GeoDataFrame Layer", **style_kwargs: Any
+    ) -> VectorLayer:
         """Create VectorLayer from a GeoPandas GeoDataFrame."""
         if hasattr(gdf, "__geo_interface__"):
             geojson_data = gdf.__geo_interface__
@@ -196,6 +214,7 @@ class VectorLayer(Layer):
         raise TypeError("Object does not implement __geo_interface__ (is GeoPandas installed?)")
 
     def to_dict(self) -> dict[str, Any]:
+        """Serialize the vector layer and its styling to a dictionary."""
         return {
             "type": "vector",
             "name": self.name,
@@ -222,12 +241,19 @@ class VectorLayer(Layer):
         coords_flat: list[tuple[float, float]] = []
 
         def extract_coords(geom: dict[str, Any]) -> None:
+            """Recursively collect coordinate pairs from a GeoJSON geometry."""
             if not geom or "coordinates" not in geom:
                 return
             raw = geom["coordinates"]
 
             def recurse(node: Any) -> None:
-                if isinstance(node, (list, tuple)) and len(node) >= 2 and isinstance(node[0], (int, float)) and isinstance(node[1], (int, float)):
+                """Descend nested coordinate arrays, appending ``(lon, lat)`` pairs."""
+                if (
+                    isinstance(node, (list, tuple))
+                    and len(node) >= 2
+                    and isinstance(node[0], (int, float))
+                    and isinstance(node[1], (int, float))
+                ):
                     coords_flat.append((float(node[0]), float(node[1])))
                 elif isinstance(node, (list, tuple)):
                     for item in node:
@@ -257,6 +283,7 @@ class RasterLayer(Layer):
     opacity: float = 0.85
 
     def to_dict(self) -> dict[str, Any]:
+        """Serialize the raster overlay configuration to a dictionary."""
         return {
             "type": "raster",
             "name": self.name,
@@ -267,5 +294,6 @@ class RasterLayer(Layer):
         }
 
     def get_bounds(self) -> tuple[float, float, float, float] | None:
+        """Normalized ``(min_lon, min_lat, max_lon, max_lat)`` bounds of the overlay."""
         (lat1, lon1), (lat2, lon2) = self.bounds
         return min(lon1, lon2), min(lat1, lat2), max(lon1, lon2), max(lat1, lat2)

@@ -34,20 +34,61 @@ Try out real-time neon laser crosshair tracking, split-screen curtain swipe comp
 
 **multilayer-sdk** (the headless Python core behind **02Multimap**) allows urban planners, spatial data scientists, and researchers to visualize, cross-analyze, and compare multiple spatial datasets side-by-side with millisecond synchronization.
 
-Instead of toggling layers on and off in a single map, `multilayer` coordinates up to 8 synchronized map viewports in dynamic grids (1x2, 2x1, 1x3, 2x2, 2x3, 2x4) with:
-- **Bi-directional Pan & Zoom Broadcasting**: Drag or zoom on any panel to coordinate all others in real time.
-- **Neon Laser Crosshair Cursor Tracking**: Move your mouse over any panel to project neon-colored crosshairs tracking the exact geographic coordinate across all viewports.
-- **Graduated Thematic Choropleths**: Quantiles, Equal Interval, Natural Breaks, and Standard Deviation statistical binning with scientific palettes (`viridis`, `magma`, `plasma`, `turbo`, `cividis`, `spectral`, `rdylbu`).
-- **Interactive Split-Screen Curtain Swipe**: Draggable split slider for before/after temporal change detection.
-- **Single-File Self-Contained HTML Dashboards**: Export zero-dependency interactive HTML files ready for presentations, stakeholders, or offline field audits.
-- **Jupyter Notebook & Google Colab Integration**: Rich inline widget display via `mm.show()`.
+Instead of toggling layers on and off in a single map, `multilayer` coordinates up to 8 synchronized map viewports in dynamic grids (1x2, 2x1, 1x3, 2x2, 2x3, 2x4) and exports a single self-contained HTML file for each visualization.
+
+### ✨ Features
+
+- **Synchronized multi-panel grids** — 2, 3, 4, 6, or 8 coordinated Leaflet viewports.
+- **Bi-directional pan & zoom broadcasting** — drag or zoom any panel to move all others.
+- **Neon laser crosshair tracking** — project the cursor's geographic coordinate across every panel.
+- **Thematic choropleths** — quantiles, equal interval, natural breaks, standard deviation, and categorical classification.
+- **Scientific color ramps** — `viridis`, `magma`, `plasma`, `inferno`, `turbo`, `cividis`, `blues`, `reds`, `greens`, `spectral`, `rdylbu`, `ylorrd`, and `pubu`.
+- **Before/after comparison tools** — draggable curtain swipe, roller curtain, spyglass magnifier, diff map, and 2x2 quad sync.
+- **Temporal storytelling** — animated timeline player, range-slider time series, and scroll-driven story maps.
+- **Interactive dashboards** — cross-filtering sidebar widgets and live KPI metric cards.
+- **Advanced spatial visualizers** — 3D globe/terrain, 3D extruded prisms, bivariate choropleths, hexbin aggregation, curved flow arcs, particle/wind fields, isochrones, hypsometric relief, proximity heatmaps, and radar POI beacons.
+- **Layer & basemap subsystem** — GeoJSON, GeoDataFrame, dict, raster overlays, built-in tile providers, and custom XYZ templates.
+- **Zero-JavaScript build step** — every map compiles to a single offline-capable HTML document.
+- **Jupyter & Google Colab ready** — rich inline widget display via `mm.show()` / `_repr_html_()`.
+- **Command line interface** — `build`, `compare`, `inspect`, and `tiles` subcommands.
+- **Fully typed** — ships a `py.typed` marker and modern `X | None` annotations.
 
 ---
 
 ## 🚀 Installation
 
+### From PyPI (recommended)
+
 ```bash
 pip install multilayer-sdk
+```
+
+The core package is dependency-free and targets **Python 3.9+**.
+
+### Optional geospatial extras
+
+The `geo` extra adds GeoPandas, Shapely, and Matplotlib for GeoDataFrame interop and notebook workflows:
+
+```bash
+pip install "multilayer-sdk[geo]"
+```
+
+### Development install
+
+Install the package in editable mode together with the test, lint, and packaging toolchain:
+
+```bash
+git clone https://gitlab.com/geospacephilo/multilayer-sdk.git
+cd multilayer-sdk
+python -m pip install -e ".[dev]"
+```
+
+The `dev` extra installs `pytest`, `pytest-cov`, `ruff`, `mypy`, `build`, and `twine`.
+
+### Verify the installation
+
+```bash
+python -c "import multilayer as ml; print(ml.__version__)"
 ```
 
 ---
@@ -89,8 +130,6 @@ mm.to_html("urban_assessment_dashboard.html")
 mm.show()
 ```
 
----
-
 ### 2. Draggable Split-Screen Curtain Swipe Comparison
 
 ```python
@@ -101,10 +140,126 @@ swipe = ml.SwipeMap(
     right_layer="landcover_2026.geojson",
     left_title="Historical (2010)",
     right_title="Current (2026)",
-    basemap="satellite"
+    basemap="satellite",
 )
 
 swipe.to_html("deforestation_swipe.html")
+```
+
+### 3. Thematic Choropleth from an In-Memory FeatureCollection
+
+```python
+import multilayer as ml
+
+zones = {
+    "type": "FeatureCollection",
+    "features": [
+        {
+            "type": "Feature",
+            "geometry": {"type": "Point", "coordinates": [28.9784, 41.0082]},
+            "properties": {"name": "Historic Peninsula", "density_km2": 12500},
+        }
+    ],
+}
+
+layer = ml.VectorLayer.from_geojson(zones, name="Districts")
+choro = ml.Choropleth.classify(
+    layer,
+    property_name="density_km2",
+    method=ml.ClassificationMethod.QUANTILES,
+    num_classes=5,
+    color_ramp=ml.ColorRamp.VIRIDIS,
+)
+choro.to_dict()  # JSON-serializable layer payload
+```
+
+### 4. Animated Time-Series Timeline
+
+```python
+import multilayer as ml
+
+timeline = ml.TimelineMap(grid="1x2", title="Flood Progression", fps=1.5)
+timeline.set_panel_title(0, "Observed")
+timeline.set_panel_title(1, "Modelled")
+
+frame = timeline.create_frame(label="T+0h", timestamp="2026-08-30 12:00")
+frame.add_layer(0, ml.VectorLayer.from_geojson("observed.geojson"))
+frame.add_layer(1, ml.VectorLayer.from_geojson("modelled.geojson"))
+
+timeline.to_html("flood_timeline.html")
+```
+
+### 5. Cross-Filtering KPI Dashboard
+
+```python
+import multilayer as ml
+
+dash = ml.InteractiveDashboard(grid="1x2", title="Resilience Dashboard", basemap="carto-dark")
+dash.add_layer(0, ml.VectorLayer.from_geojson("districts.geojson"))
+dash.add_layer(1, ml.VectorLayer.from_geojson("districts.geojson"))
+
+dash.add_metric_card(
+    title="Total Population",
+    property_key="population",
+    aggregation="sum",
+    unit="people",
+    icon="👥",
+)
+dash.add_filter(property_key="population", label="Minimum population", filter_type="range")
+
+dash.to_html("resilience_dashboard.html")
+```
+
+### 6. Hexagonal Point Aggregation
+
+```python
+import multilayer as ml
+
+points = [(41.008, 28.978), (41.009, 28.979), (41.050, 29.020)]
+values = [12.0, 8.0, 25.0]
+
+hex_layer = ml.aggregate_points_to_hexbins(
+    points,
+    point_values=values,
+    hex_radius_m=750.0,
+    statistic="MEAN",  # COUNT, MEAN, SUM, or MAX
+)
+hex_geojson = hex_layer.to_geojson()
+```
+
+### 7. 3D Extruded Prism Map
+
+```python
+import multilayer as ml
+
+prisms = ml.Choropleth3DMap(title="Urban Density Prisms", metric_name="Density (hab/ha)")
+prisms.add_prism(
+    "Kadikoy",
+    [(40.99, 29.02), (41.00, 29.02), (41.00, 29.04), (40.99, 29.04)],
+    metric_value=450.0,
+    height_scale=0.5,
+)
+prisms.save_html("density_prisms_3d.html")
+```
+
+### 8. Scroll-Driven Story Map
+
+```python
+import multilayer as ml
+
+story = ml.StoryMapScroller(story_title="Istanbul 2030", subtitle="A spatial journey")
+story.add_chapter("ch1", "Historic Core", "The historic peninsula.", 41.008, 28.978, zoom=15)
+story.add_chapter("ch2", "Financial District", "Rapid corridor growth.", 41.080, 29.010, zoom=14)
+story.save_html("storymap.html")
+```
+
+### 9. Custom XYZ Tile Provider
+
+```python
+import multilayer as ml
+
+custom_tiles = ml.get_tile_provider("https://tiles.example.com/{z}/{x}/{y}.png")
+panel_basemap = ml.TileLayer(name="Example Tiles", url_template=custom_tiles.url_template)
 ```
 
 ---
@@ -123,6 +278,9 @@ multilayer inspect study_area.geojson
 
 # 4. List all built-in web map tile basemaps
 multilayer tiles
+
+# 5. Show the installed version
+multilayer --version
 ```
 
 ---
@@ -138,6 +296,100 @@ multilayer tiles
 | **`2x3`** | 2 Rows $\times$ 3 Columns | 6 Panels | Multi-criteria evaluation (MCDA factor grids) |
 | **`2x4`** | 2 Rows $\times$ 4 Columns | 8 Panels | High-density multi-scenario sensitivity snapshots |
 
+Custom grids can also be supplied as any `"RxC"` string or via `GridLayout(custom_rows=..., custom_cols=...)`.
+
+---
+
+## 📚 Public API Reference
+
+All symbols below are importable directly from `multilayer`.
+
+### Core containers
+
+| Symbol | Kind | Purpose |
+| :--- | :--- | :--- |
+| `MultiMap` | class | Synchronized multi-panel workspace; configure panels, layers, basemaps, and export HTML. |
+| `Panel` | class | A single viewport inside a `MultiMap` grid. |
+| `SwipeMap` | class | Split-screen curtain swipe comparison of two layers. |
+| `create_multimap` | function | Convenience factory that creates a `MultiMap` and assigns layers to panels. |
+| `GridLayout` / `GridPreset` | class / enum | Grid geometry parsing, presets, and CSS generation. |
+
+### Layers & basemaps
+
+| Symbol | Kind | Purpose |
+| :--- | :--- | :--- |
+| `Layer` | abstract class | Base spatial layer contract (`to_dict`, `get_bounds`). |
+| `VectorLayer` | class | GeoJSON / dict / GeoDataFrame vector layer with styling and tooltips. |
+| `RasterLayer` | class | Georeferenced raster image overlay. |
+| `TileLayer` | class | Web-map raster tile basemap. |
+| `TileProvider` | enum | Built-in providers (OSM, CARTO, Esri, OpenTopoMap, CyclOSM). |
+| `get_tile_provider` | function | Resolve a provider alias or custom XYZ URL to a `TileLayer`. |
+
+### Thematic symbology
+
+| Symbol | Kind | Purpose |
+| :--- | :--- | :--- |
+| `Choropleth` | class | Classify vector features and produce a themed `VectorLayer`. |
+| `ClassificationMethod` | enum | `QUANTILES`, `EQUAL_INTERVAL`, `NATURAL_BREAKS`, `STANDARD_DEVIATION`, `CATEGORICAL`. |
+| `ColorRamp` | enum | Scientific and cartographic color palettes. |
+| `StyleRule` / `GraduatedStyle` / `CategoricalStyle` | dataclasses | Declarative styling rules and graduation configuration. |
+| `BivariateChoroplethMap` / `BivariateMatrixColorRamp` | class / dataclass | 3x3 bivariate correlation choropleth. |
+
+### Temporal & dashboard
+
+| Symbol | Kind | Purpose |
+| :--- | :--- | :--- |
+| `TimelineMap` / `TimeFrame` | class / dataclass | Multi-panel time-series animator and scenario player. |
+| `TemporalRangeSliderMap` / `TimeSliderFrame` | class / dataclass | Range-slider time-series playback map. |
+| `export_time_slider_html` | function | Build and save a `TemporalRangeSliderMap` from `(label, geojson)` pairs. |
+| `InteractiveDashboard` / `MetricCard` / `FilterWidget` | classes | Cross-filtering dashboard with KPI cards. |
+
+### Comparison & 3D
+
+| Symbol | Kind | Purpose |
+| :--- | :--- | :--- |
+| `DiffMap` / `SpatialDiffResult` | class / dataclass | Side-by-side geometric difference visualizer. |
+| `CurtainMap` | class | Split-slider curtain reveal comparer. |
+| `RollerCurtainMap` / `RollerAngleMode` / `render_roller_map_html` | class / enum / function | Angle-adjustable roller curtain comparer. |
+| `SpyglassCompareMap` / `LensConfig` | class / dataclass | Circular magnifying-lens comparer. |
+| `QuadSyncMap` / `QuadPanelConfig` | class / dataclass | 4-panel synchronized 2x2 map grid. |
+| `Globe3DMap` / `TerrainPanel3D` | class / dataclass | Multi-panel 3D globe and terrain viewer. |
+| `Choropleth3DMap` / `PrismPolygon3D` | class / dataclass | 3D extruded prism choropleth. |
+| `CurvedFlowMap` / `FlowArc3D` | class / dataclass | Curved animated origin-destination flow arcs. |
+
+### Advanced spatial visualizers
+
+| Symbol | Kind | Purpose |
+| :--- | :--- | :--- |
+| `HexbinHeatmapLayer` / `HexagonCell` / `aggregate_points_to_hexbins` | classes / function | Hexagonal point aggregation with COUNT/MEAN/SUM/MAX. |
+| `ParticleFlowMap` / `FlowParticleConfig` | class / dataclass | Canvas/WebGL particle flow animation. |
+| `WindParticleFieldMap` / `WindParticleParams` | class / dataclass | Vector wind/current streamline field. |
+| `TravelIsochroneBubbleMap` / `IsochroneBandParams` | class / dataclass | Multi-modal travel-time reachability rings. |
+| `HypsoTintedReliefMap` / `ContourIntervalConfig` | class / dataclass | Hypsometric relief with contour lines. |
+| `ProximityMatrixHeatmapMap` / `ProximityZoneParams` | class / dataclass | Facility distance proximity grid and heatmap. |
+| `PulseRadarPoiMap` / `RadarPulseConfig` | class / dataclass | Animated radar pulse and ripple POI beacons. |
+| `StoryMapScroller` / `StoryChapter` | class / dataclass | Scroll-driven narrative map. |
+| `MultiPageAtlas` / `AtlasGridSheet` | class / dataclass | Printable multi-page atlas grid index. |
+| `RadialSearchMap` | class | Interactive point-and-click radial buffer query. |
+
+---
+
+## 🧪 Development & Testing
+
+```bash
+# Run the test suite
+python -m pytest -q
+
+# Run tests with coverage (configured in pyproject.toml)
+python -m pytest --cov=multilayer --cov-report=term-missing
+
+# Lint and format
+python -m ruff check .
+python -m ruff format src tests
+```
+
+The project targets Python 3.9+ and is linted with Ruff (`E`, `F`, `W`, `I`, `B`, `C4`) at a 100-character line length. Tests live in `tests/` and run against `src/` via the `pythonpath` setting in `pyproject.toml`.
+
 ---
 
 ## 📄 Academic Citation
@@ -146,11 +398,11 @@ If you use **multilayer-sdk** in scientific publications, planning projects, or 
 
 ```bibtex
 @software{eminoglu2026multilayer,
-  author    = {Emino{\\u{g}}lu, Yusuf},
+  author    = {Emino{\u{g}}lu, Yusuf},
   title     = {{multilayer-sdk: Pure-Python Synchronized Multi-Panel Map Visualization, Spatial Comparison Engine, and Interactive Dashboard Builder}},
   year      = {2026},
   publisher = {PyPI - Python Package Index},
-  version   = {0.1.0},
+  version   = {0.12.1},
   url       = {https://gitlab.com/geospacephilo/multilayer-sdk}
 }
 ```

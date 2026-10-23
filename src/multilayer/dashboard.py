@@ -23,6 +23,7 @@ class MetricCard:
     icon: str = "📊"
 
     def to_dict(self) -> dict[str, str]:
+        """Serialize the metric card to a JSON-serializable dictionary."""
         return {
             "title": self.title,
             "property_key": self.property_key,
@@ -41,6 +42,7 @@ class FilterWidget:
     filter_type: str = "range"  # 'range', 'category'
 
     def to_dict(self) -> dict[str, str]:
+        """Serialize the filter widget to a JSON-serializable dictionary."""
         return {
             "property_key": self.property_key,
             "label": self.label,
@@ -57,17 +59,25 @@ class InteractiveDashboard:
         title: str = "Executive Spatial Analytics Dashboard",
         basemap: str = "carto-dark",
     ) -> None:
+        """Create an interactive cross-filtering dashboard.
+
+        Args:
+            grid: Grid preset string or :class:`GridLayout` for the map panels.
+            title: Dashboard title rendered in the header.
+            basemap: Basemap provider name shared by all panels.
+        """
         self.layout = GridLayout.from_string(grid) if isinstance(grid, str) else grid
         self.title = title
         self.basemap = basemap
         self.panel_layers: dict[int, list[VectorLayer]] = {
             i: [] for i in range(self.layout.panel_count)
         }
-        self.panel_titles: list[str] = [f"Panel {i+1}" for i in range(self.layout.panel_count)]
+        self.panel_titles: list[str] = [f"Panel {i + 1}" for i in range(self.layout.panel_count)]
         self.metric_cards: list[MetricCard] = []
         self.filters: list[FilterWidget] = []
 
     def add_layer(self, panel_index: int, layer: VectorLayer) -> "InteractiveDashboard":
+        """Add a vector layer to the panel at ``panel_index`` (ignored if out of range)."""
         if 0 <= panel_index < self.layout.panel_count:
             self.panel_layers[panel_index].append(layer)
         return self
@@ -80,6 +90,15 @@ class InteractiveDashboard:
         unit: str = "",
         icon: str = "📊",
     ) -> "InteractiveDashboard":
+        """Add a KPI metric card driven by client-side feature aggregation.
+
+        Args:
+            title: Card title.
+            property_key: Feature property to aggregate.
+            aggregation: One of ``sum``, ``mean``, ``count``, ``min``, or ``max``.
+            unit: Unit suffix displayed after the value.
+            icon: Emoji/icon prefix for the card.
+        """
         self.metric_cards.append(
             MetricCard(
                 title=title,
@@ -97,7 +116,16 @@ class InteractiveDashboard:
         label: str,
         filter_type: str = "range",
     ) -> "InteractiveDashboard":
-        self.filters.append(FilterWidget(property_key=property_key, label=label, filter_type=filter_type))
+        """Add a sidebar filter widget bound to a feature property.
+
+        Args:
+            property_key: Feature property to filter on.
+            label: Human-readable filter label.
+            filter_type: Filter kind, either ``"range"`` or ``"category"``.
+        """
+        self.filters.append(
+            FilterWidget(property_key=property_key, label=label, filter_type=filter_type)
+        )
         return self
 
     def to_html(self, output_path: str | Path | None = None) -> str:
@@ -147,7 +175,9 @@ class InteractiveDashboard:
 
         panel_divs = []
         for i in range(panel_count):
-            p_title = html.escape(self.panel_titles[i] if i < len(self.panel_titles) else f"Map {i+1}")
+            p_title = html.escape(
+                self.panel_titles[i] if i < len(self.panel_titles) else f"Map {i + 1}"
+            )
             div = f"""
             <div class="map-box">
                 <div class="panel-tag">{p_title}</div>

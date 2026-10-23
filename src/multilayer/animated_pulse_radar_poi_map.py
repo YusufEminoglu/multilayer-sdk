@@ -26,20 +26,40 @@ class PulseRadarPoiMap:
         center_lat_lon: tuple[float, float] = (41.0, 29.0),
         config: RadarPulseConfig | None = None,
     ) -> None:
+        """Initialize the animated radar POI map.
+
+        Args:
+            title: Map title rendered in the HTML document.
+            center_lat_lon: Initial view center as ``(lat, lon)`` decimal degrees.
+            config: Optional pulse/beacon styling configuration.
+        """
         self.title = title
         self.center = center_lat_lon
         self.config = config or RadarPulseConfig()
         self.beacons: list[dict[str, Any]] = []
 
-    def add_beacon(self, beacon_id: str, lat: float, lon: float, severity_level: str = "ALERT") -> None:
-        self.beacons.append({
-            "id": beacon_id,
-            "lat": float(lat),
-            "lon": float(lon),
-            "severity": severity_level,
-        })
+    def add_beacon(
+        self, beacon_id: str, lat: float, lon: float, severity_level: str = "ALERT"
+    ) -> None:
+        """Register a point-of-interest beacon to pulse on the map.
+
+        Args:
+            beacon_id: Unique identifier shown in the beacon popup.
+            lat: Beacon latitude in decimal degrees.
+            lon: Beacon longitude in decimal degrees.
+            severity_level: Severity label attached to the beacon.
+        """
+        self.beacons.append(
+            {
+                "id": beacon_id,
+                "lat": float(lat),
+                "lon": float(lon),
+                "severity": severity_level,
+            }
+        )
 
     def to_html(self) -> str:
+        """Render the beacon map as a standalone self-contained HTML document."""
         beacons_json = json.dumps(self.beacons)
         return f"""<!DOCTYPE html>
 <html>
@@ -72,6 +92,7 @@ class PulseRadarPoiMap:
 </html>"""
 
     def save_html(self, output_path: str | Path) -> None:
+        """Write the rendered beacon map HTML to ``output_path``."""
         out = Path(output_path)
         out.parent.mkdir(parents=True, exist_ok=True)
         out.write_text(self.to_html(), encoding="utf-8")

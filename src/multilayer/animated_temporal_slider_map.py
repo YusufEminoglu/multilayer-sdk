@@ -32,6 +32,13 @@ class TemporalRangeSliderMap:
         geojson_data: dict[str, Any],
         summary_metric: float = 0.0,
     ) -> None:
+        """Append a timestamped GeoJSON frame to the animation.
+
+        Args:
+            timestamp_label: Display label for the frame (e.g. ``"2024"``).
+            geojson_data: GeoJSON FeatureCollection rendered for the frame.
+            summary_metric: Optional metric shown alongside the frame.
+        """
         features = geojson_data.get("features", [])
         self.frames.append(
             TimeSliderFrame(
@@ -43,14 +50,17 @@ class TemporalRangeSliderMap:
         )
 
     def to_html(self) -> str:
-        frames_json = json.dumps([
-            {
-                "label": f.timestamp_label,
-                "data": f.geojson_data,
-                "metric": f.summary_metric,
-            }
-            for f in self.frames
-        ])
+        """Render the time-series slider map as a standalone HTML document."""
+        frames_json = json.dumps(
+            [
+                {
+                    "label": f.timestamp_label,
+                    "data": f.geojson_data,
+                    "metric": f.summary_metric,
+                }
+                for f in self.frames
+            ]
+        )
 
         return f"""<!DOCTYPE html>
 <html>
@@ -72,7 +82,7 @@ class TemporalRangeSliderMap:
   <div id="timeline-bar">
     <button id="btn-play" style="background:#22c55e; color:white; border:none; padding:8px 16px; border-radius:6px; cursor:pointer;">▶ Play</button>
     <input type="range" id="slider" min="0" max="{max(0, len(self.frames) - 1)}" value="0" />
-    <span class="badge" id="frame-label">{self.frames[0].timestamp_label if self.frames else 'N/A'}</span>
+    <span class="badge" id="frame-label">{self.frames[0].timestamp_label if self.frames else "N/A"}</span>
   </div>
   <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
   <script>
@@ -93,6 +103,7 @@ class TemporalRangeSliderMap:
 </html>"""
 
     def save_html(self, output_path: str | Path) -> Path:
+        """Write the rendered time-series map to ``output_path`` and return the path."""
         out = Path(output_path)
         out.parent.mkdir(parents=True, exist_ok=True)
         out.write_text(self.to_html(), encoding="utf-8")

@@ -26,7 +26,9 @@ class TestMultiLayerRound8(unittest.TestCase):
         slider_map = TemporalRangeSliderMap(title="Historical Urban Growth")
         sample_geojson_1 = {
             "type": "FeatureCollection",
-            "features": [{"type": "Feature", "geometry": {"type": "Point", "coordinates": [28.9, 41.0]}}],
+            "features": [
+                {"type": "Feature", "geometry": {"type": "Point", "coordinates": [28.9, 41.0]}}
+            ],
         }
         sample_geojson_2 = {
             "type": "FeatureCollection",

@@ -19,9 +19,11 @@ class RadialSearchMap:
     geojson_target_layers: list[dict[str, Any]] = field(default_factory=list)
 
     def add_layer(self, geojson_data: dict[str, Any]) -> None:
+        """Register a GeoJSON layer to be queried by the radial buffer."""
         self.geojson_target_layers.append(geojson_data)
 
     def to_html(self, title: str = "Interactive Spatial Radius Filter") -> str:
+        """Render the radial search widget as a standalone HTML document."""
         return f"""<!DOCTYPE html>
 <html lang="en">
 <head>
@@ -81,6 +83,7 @@ class RadialSearchMap:
 """
 
     def save_html(self, output_path: str | Path) -> Path:
+        """Write the rendered radial search HTML to ``output_path`` and return the path."""
         out = Path(output_path)
         out.parent.mkdir(parents=True, exist_ok=True)
         out.write_text(self.to_html(), encoding="utf-8")

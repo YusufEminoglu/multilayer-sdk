@@ -16,7 +16,14 @@ class WindParticleParams:
     speed_factor: float = 0.8
     color_palette: list[str] = field(
         default_factory=lambda: [
-            "#3288bd", "#66c2a5", "#abdda4", "#e6f598", "#fee08b", "#fdae61", "#f46d43", "#d53e4f"
+            "#3288bd",
+            "#66c2a5",
+            "#abdda4",
+            "#e6f598",
+            "#fee08b",
+            "#fdae61",
+            "#f46d43",
+            "#d53e4f",
         ]
     )
 
@@ -29,6 +36,12 @@ class WindParticleFieldMap:
         title: str = "Vector Flow Streamline Animator",
         params: WindParticleParams | None = None,
     ) -> None:
+        """Initialize the vector wind/current particle field map.
+
+        Args:
+            title: Map title rendered in the HTML document.
+            params: Optional particle count, palette, and animation configuration.
+        """
         self.title = title
         self.params = params or WindParticleParams()
         self.vector_grid_cells: list[dict[str, Any]] = []
@@ -40,6 +53,14 @@ class WindParticleFieldMap:
         u_velocity_mps: float,  # Eastward wind component
         v_velocity_mps: float,  # Northward wind component
     ) -> None:
+        """Add a wind/current vector sample to the particle field.
+
+        Args:
+            lat: Sample latitude in decimal degrees.
+            lon: Sample longitude in decimal degrees.
+            u_velocity_mps: Eastward velocity component in metres per second.
+            v_velocity_mps: Northward velocity component in metres per second.
+        """
         self.vector_grid_cells.append(
             {
                 "lat": float(lat),
@@ -50,6 +71,7 @@ class WindParticleFieldMap:
         )
 
     def to_html(self) -> str:
+        """Render the wind particle field as a standalone HTML document."""
         data_json = json.dumps(self.vector_grid_cells)
         return f"""<!DOCTYPE html>
 <html>
@@ -75,6 +97,7 @@ class WindParticleFieldMap:
 </html>"""
 
     def save_html(self, output_path: str | Path) -> None:
+        """Write the rendered wind particle map HTML to ``output_path``."""
         out = Path(output_path)
         out.parent.mkdir(parents=True, exist_ok=True)
         out.write_text(self.to_html(), encoding="utf-8")

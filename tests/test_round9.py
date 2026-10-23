@@ -22,8 +22,13 @@ class TestMultiLayerRound9(unittest.TestCase):
         self.temp_dir.cleanup()
 
     def test_bivariate_choropleth_map(self) -> None:
-        b_map = BivariateChoroplethMap(title="Demographic Vulnerability", var_a_label="Poverty", var_b_label="Flood")
-        geom = {"type": "Polygon", "coordinates": [[[29.0, 41.0], [29.1, 41.0], [29.1, 41.1], [29.0, 41.1], [29.0, 41.0]]]}
+        b_map = BivariateChoroplethMap(
+            title="Demographic Vulnerability", var_a_label="Poverty", var_b_label="Flood"
+        )
+        geom = {
+            "type": "Polygon",
+            "coordinates": [[[29.0, 41.0], [29.1, 41.0], [29.1, 41.1], [29.0, 41.1], [29.0, 41.0]]],
+        }
 
         b_map.add_bivariate_feature("Zone1", val_a=15.0, val_b=20.0, geometry=geom)
         b_map.add_bivariate_feature("Zone2", val_a=45.0, val_b=85.0, geometry=geom)

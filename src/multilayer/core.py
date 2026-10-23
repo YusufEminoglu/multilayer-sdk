@@ -42,6 +42,7 @@ class Panel:
         return self
 
     def to_dict(self) -> dict[str, Any]:
+        """Serialize the panel configuration to a JSON-serializable dictionary."""
         return {
             "title": self.title,
             "basemap": self.basemap.to_dict() if self.basemap else None,
@@ -74,6 +75,16 @@ class MultiMap:
         initial_center: tuple[float, float] | None = None,
         initial_zoom: int | None = None,
     ) -> None:
+        """Create a synchronized multi-panel map workspace.
+
+        Args:
+            grid: Grid preset string, :class:`GridPreset`, or :class:`GridLayout`.
+            title: Dashboard title rendered in the HTML header.
+            theme: Color theme, either ``"dark"`` or ``"light"``.
+            basemap: Default basemap name or :class:`TileLayer` for all panels.
+            initial_center: Optional initial map center as ``(lat, lon)``.
+            initial_zoom: Optional initial zoom level.
+        """
         if isinstance(grid, str):
             self.grid = GridLayout.from_string(grid)
         elif isinstance(grid, GridPreset):
@@ -101,15 +112,18 @@ class MultiMap:
 
     @property
     def panel_count(self) -> int:
+        """Number of panels currently in the workspace."""
         return len(self.panels)
 
     def panel(self, index: int) -> Panel:
         """Access a specific panel by 0-based index."""
         if 0 <= index < len(self.panels):
             return self.panels[index]
-        raise IndexError(f"Panel index {index} out of range (0 to {len(self.panels)-1})")
+        raise IndexError(f"Panel index {index} out of range (0 to {len(self.panels) - 1})")
 
-    def add_layer(self, layer: Layer | str | dict[str, Any], panel_index: int | None = None, **kwargs: Any) -> MultiMap:
+    def add_layer(
+        self, layer: Layer | str | dict[str, Any], panel_index: int | None = None, **kwargs: Any
+    ) -> MultiMap:
         """Add a layer to a specific panel or to all panels if panel_index is None."""
         if panel_index is not None:
             self.panel(panel_index).add_layer(layer, **kwargs)
@@ -118,7 +132,9 @@ class MultiMap:
                 p.add_layer(layer, **kwargs)
         return self
 
-    def set_basemap(self, basemap_or_name: TileLayer | str, panel_index: int | None = None) -> MultiMap:
+    def set_basemap(
+        self, basemap_or_name: TileLayer | str, panel_index: int | None = None
+    ) -> MultiMap:
         """Set basemap for a specific panel or all panels."""
         if panel_index is not None:
             self.panel(panel_index).set_basemap(basemap_or_name)
@@ -160,16 +176,19 @@ class MultiMap:
     def _repr_html_(self) -> str:
         """Direct inline HTML representation inside Jupyter Notebook / Google Colab."""
         html_data = self.to_html()
-        escaped = html_data.replace('"', '&quot;')
+        escaped = html_data.replace('"', "&quot;")
         return f'<iframe srcdoc="{escaped}" width="100%" height="600px" style="border:1px solid #1e293b;border-radius:8px;"></iframe>'
 
     def show(self) -> None:
         """Display inline widget in Jupyter Notebook environments."""
         try:
             from IPython.display import HTML, display
+
             display(HTML(self._repr_html_()))
         except ImportError:
-            print(f"MultiMap({self.grid.preset.value}, panels={len(self.panels)}, title='{self.title}')")
+            print(
+                f"MultiMap({self.grid.preset.value}, panels={len(self.panels)}, title='{self.title}')"
+            )
 
 
 class SwipeMap:
@@ -184,14 +203,33 @@ class SwipeMap:
         title: str = "Swipe Map Comparison",
         basemap: str | TileLayer = "carto-dark-matter",
     ) -> None:
-        self.left_layer = VectorLayer.from_geojson(left_layer) if isinstance(left_layer, (str, dict)) else left_layer
-        self.right_layer = VectorLayer.from_geojson(right_layer) if isinstance(right_layer, (str, dict)) else right_layer
+        """Create a split-screen curtain swipe comparison map.
+
+        Args:
+            left_layer: Left/before layer as a :class:`Layer`, GeoJSON path, or dict.
+            right_layer: Right/after layer as a :class:`Layer`, GeoJSON path, or dict.
+            left_title: Label shown over the left pane.
+            right_title: Label shown over the right pane.
+            title: Document title.
+            basemap: Basemap name or :class:`TileLayer` shared by both panes.
+        """
+        self.left_layer = (
+            VectorLayer.from_geojson(left_layer)
+            if isinstance(left_layer, (str, dict))
+            else left_layer
+        )
+        self.right_layer = (
+            VectorLayer.from_geojson(right_layer)
+            if isinstance(right_layer, (str, dict))
+            else right_layer
+        )
         self.left_title = left_title
         self.right_title = right_title
         self.title = title
         self.basemap = get_tile_provider(basemap) if isinstance(basemap, str) else basemap
 
     def get_bounds(self) -> tuple[float, float, float, float] | None:
+        """Union bounding box of the left and right layers, or ``None`` if empty."""
         boxes: list[tuple[float, float, float, float]] = []
         if self.left_layer and self.left_layer.get_bounds():
             boxes.append(self.left_layer.get_bounds())  # type: ignore
@@ -199,9 +237,15 @@ class SwipeMap:
             boxes.append(self.right_layer.get_bounds())  # type: ignore
         if not boxes:
             return None
-        return min(b[0] for b in boxes), min(b[1] for b in boxes), max(b[2] for b in boxes), max(b[3] for b in boxes)
+        return (
+            min(b[0] for b in boxes),
+            min(b[1] for b in boxes),
+            max(b[2] for b in boxes),
+            max(b[3] for b in boxes),
+        )
 
     def to_html(self, output_path: str | None = None) -> str:
+        """Compile the swipe map to standalone HTML and optionally save it."""
         html_str = build_swipe_map_html(self)
         if output_path:
             os.makedirs(os.path.dirname(os.path.abspath(output_path)), exist_ok=True)
@@ -210,8 +254,9 @@ class SwipeMap:
         return html_str
 
     def _repr_html_(self) -> str:
+        """Inline HTML iframe representation for Jupyter Notebook / Google Colab."""
         html_data = self.to_html()
-        escaped = html_data.replace('"', '&quot;')
+        escaped = html_data.replace('"', "&quot;")
         return f'<iframe srcdoc="{escaped}" width="100%" height="600px" style="border:1px solid #1e293b;border-radius:8px;"></iframe>'
 
 

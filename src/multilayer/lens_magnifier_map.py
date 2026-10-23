@@ -23,11 +23,14 @@ class SpyglassCompareMap:
     center_lat: float = 41.0082
     center_lon: float = 28.9784
     base_zoom: int = 13
-    primary_tile_url: str = "https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png"
+    primary_tile_url: str = (
+        "https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png"
+    )
     spyglass_tile_url: str = "https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}"
     lens_config: LensConfig = field(default_factory=LensConfig)
 
     def render_html(self) -> str:
+        """Render the spyglass comparison map as a standalone HTML document."""
         return f"""<!DOCTYPE html>
 <html lang="en">
 <head>
@@ -84,6 +87,7 @@ class SpyglassCompareMap:
 </html>"""
 
     def save_html(self, output_path: str | Path) -> Path:
+        """Write the rendered spyglass map to ``output_path`` and return the path."""
         out = Path(output_path)
         out.parent.mkdir(parents=True, exist_ok=True)
         out.write_text(self.render_html(), encoding="utf-8")

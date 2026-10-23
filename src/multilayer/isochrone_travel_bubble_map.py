@@ -27,6 +27,13 @@ class TravelIsochroneBubbleMap:
         center_lat_lon: tuple[float, float] = (41.0, 29.0),
         params: IsochroneBandParams | None = None,
     ) -> None:
+        """Initialize the isochrone bubble map.
+
+        Args:
+            title: Map title rendered in the HTML document.
+            center_lat_lon: Initial view center as ``(lat, lon)``.
+            params: Optional cutoff bands, palette, and opacity configuration.
+        """
         self.title = title
         self.center = center_lat_lon
         self.params = params or IsochroneBandParams()
@@ -38,6 +45,13 @@ class TravelIsochroneBubbleMap:
         geometry_polygon: dict[str, Any],
         mode: str = "TRANSIT",
     ) -> None:
+        """Add a travel-time reachability ring.
+
+        Args:
+            cutoff_minutes: Travel-time cutoff in minutes.
+            geometry_polygon: GeoJSON geometry of the reachable area.
+            mode: Travel mode label (e.g. ``"WALK"``, ``"TRANSIT"``).
+        """
         self.rings.append(
             {
                 "cutoff_min": int(cutoff_minutes),
@@ -47,6 +61,7 @@ class TravelIsochroneBubbleMap:
         )
 
     def to_html(self) -> str:
+        """Render the isochrone bubble map as a standalone HTML document."""
         rings_json = json.dumps(self.rings)
         palette_json = json.dumps(self.params.color_palette)
         return f"""<!DOCTYPE html>
@@ -79,6 +94,7 @@ class TravelIsochroneBubbleMap:
 </html>"""
 
     def save_html(self, output_path: str | Path) -> None:
+        """Write the rendered isochrone map HTML to ``output_path``."""
         out = Path(output_path)
         out.parent.mkdir(parents=True, exist_ok=True)
         out.write_text(self.to_html(), encoding="utf-8")

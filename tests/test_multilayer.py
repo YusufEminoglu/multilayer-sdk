@@ -31,17 +31,34 @@ def sample_geojson() -> dict:
                 "geometry": {
                     "type": "Polygon",
                     "coordinates": [
-                        [[27.13, 38.41], [27.15, 38.41], [27.15, 38.43], [27.13, 38.43], [27.13, 38.41]]
+                        [
+                            [27.13, 38.41],
+                            [27.15, 38.41],
+                            [27.15, 38.43],
+                            [27.13, 38.43],
+                            [27.13, 38.41],
+                        ]
                     ],
                 },
-                "properties": {"id": 1, "name": "Zone A", "pop_density": 1250.0, "risk_score": 0.82},
+                "properties": {
+                    "id": 1,
+                    "name": "Zone A",
+                    "pop_density": 1250.0,
+                    "risk_score": 0.82,
+                },
             },
             {
                 "type": "Feature",
                 "geometry": {
                     "type": "Polygon",
                     "coordinates": [
-                        [[27.16, 38.44], [27.18, 38.44], [27.18, 38.46], [27.16, 38.46], [27.16, 38.44]]
+                        [
+                            [27.16, 38.44],
+                            [27.18, 38.44],
+                            [27.18, 38.46],
+                            [27.16, 38.46],
+                            [27.16, 38.44],
+                        ]
                     ],
                 },
                 "properties": {"id": 2, "name": "Zone B", "pop_density": 450.0, "risk_score": 0.34},
@@ -51,7 +68,13 @@ def sample_geojson() -> dict:
                 "geometry": {
                     "type": "Polygon",
                     "coordinates": [
-                        [[27.19, 38.47], [27.21, 38.47], [27.21, 38.49], [27.19, 38.49], [27.19, 38.47]]
+                        [
+                            [27.19, 38.47],
+                            [27.21, 38.47],
+                            [27.21, 38.49],
+                            [27.19, 38.49],
+                            [27.19, 38.47],
+                        ]
                     ],
                 },
                 "properties": {"id": 3, "name": "Zone C", "pop_density": 890.0, "risk_score": 0.58},
@@ -107,12 +130,20 @@ def test_choropleth_classification():
     v = VectorLayer.from_geojson(data)
 
     # Quantiles
-    c_quant = Choropleth.classify(v, "pop_density", method=ClassificationMethod.QUANTILES, num_classes=3, color_ramp=ColorRamp.VIRIDIS)
+    c_quant = Choropleth.classify(
+        v,
+        "pop_density",
+        method=ClassificationMethod.QUANTILES,
+        num_classes=3,
+        color_ramp=ColorRamp.VIRIDIS,
+    )
     assert len(c_quant.data["features"]) == 3
     assert "_multilayer_fill_color" in c_quant.data["features"][0]["properties"]
 
     # Equal Interval
-    c_eq = Choropleth.classify(v, "risk_score", method="equal_interval", num_classes=3, color_ramp="plasma")
+    c_eq = Choropleth.classify(
+        v, "risk_score", method="equal_interval", num_classes=3, color_ramp="plasma"
+    )
     assert len(c_eq.data["features"]) == 3
 
 
@@ -206,4 +237,3 @@ def test_create_multimap_helper():
     assert mm.panel(0).title == "L1"
     assert mm.panel(1).title == "L2"
     assert len(mm.panel(0).layers) == 1
-

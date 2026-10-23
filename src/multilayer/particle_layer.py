@@ -29,13 +29,27 @@ class ParticleFlowMap:
     center_lon: float = 29.0
     initial_zoom: int = 12
     config: FlowParticleConfig = field(default_factory=FlowParticleConfig)
-    vector_field_grid: list[dict[str, Any]] = field(default_factory=list)  # [{'lat': y, 'lon': x, 'u': dx, 'v': dy}]
+    vector_field_grid: list[dict[str, Any]] = field(
+        default_factory=list
+    )  # [{'lat': y, 'lon': x, 'u': dx, 'v': dy}]
 
-    def add_vector(self, lat: float, lon: float, u: float, v: float, magnitude: float | None = None) -> None:
-        mag = magnitude if magnitude is not None else (u**2 + v**2)**0.5
+    def add_vector(
+        self, lat: float, lon: float, u: float, v: float, magnitude: float | None = None
+    ) -> None:
+        """Add a vector field sample used to drive the particle animation.
+
+        Args:
+            lat: Sample latitude in decimal degrees.
+            lon: Sample longitude in decimal degrees.
+            u: Eastward vector component.
+            v: Northward vector component.
+            magnitude: Optional precomputed magnitude; derived from ``u``/``v`` if omitted.
+        """
+        mag = magnitude if magnitude is not None else (u**2 + v**2) ** 0.5
         self.vector_field_grid.append({"lat": lat, "lon": lon, "u": u, "v": v, "mag": mag})
 
     def render_html(self) -> str:
+        """Render the particle flow animation as a standalone HTML document."""
         grid_json = json.dumps(self.vector_field_grid)
         colors_json = json.dumps(self.config.color_ramp_hex)
 
@@ -122,6 +136,7 @@ class ParticleFlowMap:
 </html>"""
 
     def save_html(self, output_path: str | Path) -> Path:
+        """Write the rendered particle flow map to ``output_path`` and return the path."""
         out = Path(output_path)
         out.parent.mkdir(parents=True, exist_ok=True)
         out.write_text(self.render_html(), encoding="utf-8")

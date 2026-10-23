@@ -33,25 +33,32 @@ class Globe3DMap:
     panels: list[TerrainPanel3D] = field(default_factory=list)
 
     def add_panel(self, panel: TerrainPanel3D) -> None:
+        """Append a 3D terrain/globe viewport to the synchronized viewer."""
         self.panels.append(panel)
 
     def to_html(self, title: str = "3D Synchronized Terrain Globe") -> str:
         """Generate a self-contained 3D WebGL / Three.js / Cesium compatible HTML document."""
-        panels_json = json.dumps([
-            {
-                "title": p.title,
-                "lat": p.camera_lat,
-                "lon": p.camera_lon,
-                "alt": p.camera_altitude_m,
-                "pitch": p.pitch_degrees,
-                "bearing": p.bearing_degrees,
-                "exaggeration": p.terrain_exaggeration,
-                "layers": p.geojson_layers,
-            }
-            for p in self.panels
-        ])
+        panels_json = json.dumps(
+            [
+                {
+                    "title": p.title,
+                    "lat": p.camera_lat,
+                    "lon": p.camera_lon,
+                    "alt": p.camera_altitude_m,
+                    "pitch": p.pitch_degrees,
+                    "bearing": p.bearing_degrees,
+                    "exaggeration": p.terrain_exaggeration,
+                    "layers": p.geojson_layers,
+                }
+                for p in self.panels
+            ]
+        )
 
-        grid_css = "grid-template-columns: 1fr 1fr;" if "dual" in self.layout else "grid-template-columns: 1fr;"
+        grid_css = (
+            "grid-template-columns: 1fr 1fr;"
+            if "dual" in self.layout
+            else "grid-template-columns: 1fr;"
+        )
         if self.layout == "quad":
             grid_css = "grid-template-columns: 1fr 1fr; grid-template-rows: 1fr 1fr;"
 
@@ -93,6 +100,7 @@ class Globe3DMap:
 """
 
     def save_html(self, output_path: str | Path) -> Path:
+        """Write the rendered 3D globe HTML to ``output_path`` and return the path."""
         out = Path(output_path)
         out.parent.mkdir(parents=True, exist_ok=True)
         out.write_text(self.to_html(), encoding="utf-8")

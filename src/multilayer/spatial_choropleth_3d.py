@@ -34,6 +34,15 @@ class Choropleth3DMap:
         height_scale: float = 10.0,
         color_hex: str = "#3b82f6",
     ) -> None:
+        """Add an extruded prism polygon.
+
+        Args:
+            feature_id: Unique feature identifier.
+            coordinates_lat_lon: Ordered ``(lat, lon)`` polygon vertices.
+            metric_value: Thematic value driving extrusion height.
+            height_scale: Metres of extrusion per metric unit.
+            color_hex: Fill color for the prism.
+        """
         poly = list(coordinates_lat_lon)
         self.prisms.append(
             PrismPolygon3D(
@@ -46,28 +55,32 @@ class Choropleth3DMap:
         )
 
     def to_geojson(self) -> dict[str, Any]:
+        """Export the prisms as a GeoJSON polygon FeatureCollection."""
         features = []
         for p in self.prisms:
             coords = [[round(pt[1], 5), round(pt[0], 5)] for pt in p.boundary_polygon]
             if coords and coords[0] != coords[-1]:
                 coords.append(coords[0])
 
-            features.append({
-                "type": "Feature",
-                "properties": {
-                    "id": p.feature_id,
-                    "value": round(p.metric_value, 2),
-                    "height": round(p.extrusion_height_m, 1),
-                    "color": p.color_hex,
-                },
-                "geometry": {
-                    "type": "Polygon",
-                    "coordinates": [coords],
-                },
-            })
+            features.append(
+                {
+                    "type": "Feature",
+                    "properties": {
+                        "id": p.feature_id,
+                        "value": round(p.metric_value, 2),
+                        "height": round(p.extrusion_height_m, 1),
+                        "color": p.color_hex,
+                    },
+                    "geometry": {
+                        "type": "Polygon",
+                        "coordinates": [coords],
+                    },
+                }
+            )
         return {"type": "FeatureCollection", "features": features}
 
     def render_html(self) -> str:
+        """Render the 3D choropleth prisms as a MapLibre GL HTML document."""
         gj_str = json.dumps(self.to_geojson())
         return f"""<!DOCTYPE html>
 <html lang="en">
@@ -115,6 +128,7 @@ class Choropleth3DMap:
 </html>"""
 
     def save_html(self, output_path: str | Path) -> Path:
+        """Write the rendered 3D choropleth HTML to ``output_path`` and return the path."""
         out = Path(output_path)
         out.parent.mkdir(parents=True, exist_ok=True)
         out.write_text(self.render_html(), encoding="utf-8")

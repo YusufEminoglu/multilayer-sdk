@@ -23,12 +23,14 @@ class TimeFrame:
     panel_layers: dict[int, list[VectorLayer]] = field(default_factory=dict)
 
     def add_layer(self, panel_index: int, layer: VectorLayer) -> "TimeFrame":
+        """Attach a vector layer to a panel within this frame."""
         if panel_index not in self.panel_layers:
             self.panel_layers[panel_index] = []
         self.panel_layers[panel_index].append(layer)
         return self
 
     def to_dict(self) -> dict[str, Any]:
+        """Serialize the frame and its per-panel layers to a dictionary."""
         return {
             "label": self.label,
             "timestamp": self.timestamp,
@@ -60,22 +62,33 @@ class TimelineMap:
         basemap: str = "carto-dark",
         fps: float = 1.0,
     ) -> None:
+        """Initialize the multi-panel time-series animator.
+
+        Args:
+            grid: Grid preset string or :class:`GridLayout`.
+            title: Player title rendered in the header.
+            basemap: Basemap provider name shared by all panels.
+            fps: Playback frames per second.
+        """
         self.layout = GridLayout.from_string(grid) if isinstance(grid, str) else grid
         self.title = title
         self.basemap = basemap
         self.fps = fps
         self.frames: list[TimeFrame] = []
-        self.panel_titles: list[str] = [f"Panel {i+1}" for i in range(self.layout.panel_count)]
+        self.panel_titles: list[str] = [f"Panel {i + 1}" for i in range(self.layout.panel_count)]
 
     def set_panel_title(self, panel_index: int, title: str) -> None:
+        """Set the display title for the panel at ``panel_index`` (ignored if out of range)."""
         if 0 <= panel_index < len(self.panel_titles):
             self.panel_titles[panel_index] = title
 
     def add_frame(self, frame: TimeFrame) -> "TimelineMap":
+        """Append a pre-built :class:`TimeFrame` to the timeline."""
         self.frames.append(frame)
         return self
 
     def create_frame(self, label: str, timestamp: str = "", description: str = "") -> TimeFrame:
+        """Create, append, and return a new empty :class:`TimeFrame`."""
         frame = TimeFrame(label=label, timestamp=timestamp, description=description)
         self.frames.append(frame)
         return frame
@@ -103,7 +116,9 @@ class TimelineMap:
 
         panel_divs = []
         for i in range(panel_count):
-            p_title = html.escape(self.panel_titles[i] if i < len(self.panel_titles) else f"Panel {i+1}")
+            p_title = html.escape(
+                self.panel_titles[i] if i < len(self.panel_titles) else f"Panel {i + 1}"
+            )
             div = f"""
             <div class="map-card" style="flex: 1; position: relative; min-width: 0; min-height: 0;">
                 <div class="panel-header">{p_title}</div>

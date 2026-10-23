@@ -19,14 +19,17 @@ class GridPreset(str, Enum):
 
     @property
     def rows(self) -> int:
+        """Number of grid rows for this preset."""
         return int(self.value.split("x")[0])
 
     @property
     def cols(self) -> int:
+        """Number of grid columns for this preset."""
         return int(self.value.split("x")[1])
 
     @property
     def panel_count(self) -> int:
+        """Total number of panels (``rows * cols``) for this preset."""
         return self.rows * self.cols
 
 
@@ -40,14 +43,17 @@ class GridLayout:
 
     @property
     def rows(self) -> int:
+        """Effective row count, honoring any custom override."""
         return self.custom_rows if self.custom_rows is not None else self.preset.rows
 
     @property
     def cols(self) -> int:
+        """Effective column count, honoring any custom override."""
         return self.custom_cols if self.custom_cols is not None else self.preset.cols
 
     @property
     def panel_count(self) -> int:
+        """Total number of panels (``rows * cols``)."""
         return self.rows * self.cols
 
     @classmethod

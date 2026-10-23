@@ -23,7 +23,12 @@ class TestMultiLayerRound10(unittest.TestCase):
 
     def test_travel_isochrone_bubble_map(self) -> None:
         b_map = TravelIsochroneBubbleMap(title="15-Minute City Paris", center_lat_lon=(48.85, 2.35))
-        poly = {"type": "Polygon", "coordinates": [[[2.30, 48.80], [2.40, 48.80], [2.40, 48.90], [2.30, 48.90], [2.30, 48.80]]]}
+        poly = {
+            "type": "Polygon",
+            "coordinates": [
+                [[2.30, 48.80], [2.40, 48.80], [2.40, 48.90], [2.30, 48.90], [2.30, 48.80]]
+            ],
+        }
 
         b_map.add_isochrone_ring(15, poly, mode="WALK")
         b_map.add_isochrone_ring(30, poly, mode="TRANSIT")

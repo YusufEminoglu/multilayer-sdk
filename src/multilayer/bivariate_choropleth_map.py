@@ -31,6 +31,14 @@ class BivariateChoroplethMap:
         var_b_label: str = "Flood Hazard Index",
         color_ramp: BivariateMatrixColorRamp | None = None,
     ) -> None:
+        """Initialize the bivariate choropleth map.
+
+        Args:
+            title: Map title rendered in the HTML document.
+            var_a_label: Legend label for the first (row) variable.
+            var_b_label: Legend label for the second (column) variable.
+            color_ramp: Optional 3x3 bivariate color matrix.
+        """
         self.title = title
         self.var_a_label = var_a_label
         self.var_b_label = var_b_label
@@ -45,11 +53,22 @@ class BivariateChoroplethMap:
         geometry: dict[str, Any],
         properties: dict[str, Any] | None = None,
     ) -> None:
+        """Add a feature carrying two variables for bivariate classification.
+
+        Args:
+            feature_id: Unique feature identifier.
+            val_a: Value of the first (row) variable.
+            val_b: Value of the second (column) variable.
+            geometry: GeoJSON geometry for the feature.
+            properties: Optional extra properties merged into the feature.
+        """
         props = dict(properties or {})
         props["id"] = feature_id
         props["val_a"] = float(val_a)
         props["val_b"] = float(val_b)
-        self.features.append({"type": "Feature", "id": feature_id, "properties": props, "geometry": geometry})
+        self.features.append(
+            {"type": "Feature", "id": feature_id, "properties": props, "geometry": geometry}
+        )
 
     def classify_and_color_features(self) -> list[dict[str, Any]]:
         """Assign 3x3 quantile matrix color codes to all features."""
@@ -71,11 +90,12 @@ class BivariateChoroplethMap:
 
             color = self.color_ramp.matrix_3x3[row][col]
             f["properties"]["bivariate_color"] = color
-            f["properties"]["bivariate_category"] = f"A{row+1}_B{col+1}"
+            f["properties"]["bivariate_category"] = f"A{row + 1}_B{col + 1}"
 
         return self.features
 
     def to_html(self) -> str:
+        """Classify features and render the map as a standalone HTML document."""
         self.classify_and_color_features()
         data_json = json.dumps({"type": "FeatureCollection", "features": self.features})
 
@@ -114,6 +134,7 @@ class BivariateChoroplethMap:
 </html>"""
 
     def save_html(self, output_path: str | Path) -> None:
+        """Write the rendered bivariate map HTML to ``output_path``."""
         out = Path(output_path)
         out.parent.mkdir(parents=True, exist_ok=True)
         out.write_text(self.to_html(), encoding="utf-8")

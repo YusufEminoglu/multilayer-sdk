@@ -37,7 +37,9 @@ class TestMultiLayerRound11(unittest.TestCase):
         self.assertTrue(out_path.exists())
 
     def test_animated_pulse_radar_poi(self) -> None:
-        r_map = PulseRadarPoiMap(title="Maritime Beacons", config=RadarPulseConfig(beacon_color_hex="#ff0055"))
+        r_map = PulseRadarPoiMap(
+            title="Maritime Beacons", config=RadarPulseConfig(beacon_color_hex="#ff0055")
+        )
         r_map.add_beacon("Lighthouse_A", 41.25, 29.10, "ACTIVE_BEACON")
 
         self.assertEqual(len(r_map.beacons), 1)

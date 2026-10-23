@@ -17,7 +17,13 @@ class ContourIntervalConfig:
     minor_line_color: str = "#cd853f"  # Peru light brown
     hypso_color_ramp: list[str] = field(
         default_factory=lambda: [
-            "#43956f", "#80b878", "#c8d886", "#fae392", "#e2a168", "#b85e43", "#ffffff"
+            "#43956f",
+            "#80b878",
+            "#c8d886",
+            "#fae392",
+            "#e2a168",
+            "#b85e43",
+            "#ffffff",
         ]
     )
 
@@ -30,6 +36,12 @@ class HypsoTintedReliefMap:
         title: str = "Topographic Elevation Relief",
         config: ContourIntervalConfig | None = None,
     ) -> None:
+        """Initialize the hypsometric relief map.
+
+        Args:
+            title: Map title rendered in the HTML document.
+            config: Optional contour interval and color configuration.
+        """
         self.title = title
         self.config = config or ContourIntervalConfig()
         self.contour_lines: list[dict[str, Any]] = []
@@ -39,6 +51,12 @@ class HypsoTintedReliefMap:
         elevation_m: float,
         coordinates_path: Sequence[tuple[float, float]],
     ) -> None:
+        """Add a contour line at the given elevation.
+
+        Args:
+            elevation_m: Elevation of the contour in metres.
+            coordinates_path: Ordered ``(lat, lon)`` vertices tracing the contour.
+        """
         is_index = (elevation_m % self.config.index_interval_meters) == 0
         self.contour_lines.append(
             {
@@ -49,6 +67,7 @@ class HypsoTintedReliefMap:
         )
 
     def to_html(self) -> str:
+        """Render the relief map with contour layers as standalone HTML."""
         features = [
             {
                 "type": "Feature",
@@ -97,6 +116,7 @@ class HypsoTintedReliefMap:
 </html>"""
 
     def save_html(self, output_path: str | Path) -> None:
+        """Write the rendered relief map HTML to ``output_path``."""
         out = Path(output_path)
         out.parent.mkdir(parents=True, exist_ok=True)
         out.write_text(self.to_html(), encoding="utf-8")

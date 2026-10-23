@@ -25,14 +25,34 @@ def main(args: list[str] | None = None) -> int:
     subparsers = parser.add_subparsers(dest="command", help="Available subcommands")
 
     # Subcommand: build
-    build_parser = subparsers.add_parser("build", help="Build synchronized multi-panel HTML dashboard")
-    build_parser.add_argument("--layers", "-l", required=True, help="Comma-separated list of GeoJSON layer paths")
-    build_parser.add_argument("--grid", "-g", default="2x2", help="Grid preset: 1x2, 2x1, 1x3, 2x2, 2x3, 2x4 (default: 2x2)")
+    build_parser = subparsers.add_parser(
+        "build", help="Build synchronized multi-panel HTML dashboard"
+    )
+    build_parser.add_argument(
+        "--layers", "-l", required=True, help="Comma-separated list of GeoJSON layer paths"
+    )
+    build_parser.add_argument(
+        "--grid",
+        "-g",
+        default="2x2",
+        help="Grid preset: 1x2, 2x1, 1x3, 2x2, 2x3, 2x4 (default: 2x2)",
+    )
     build_parser.add_argument("--title", "-t", default="MultiMap Workspace", help="Dashboard title")
-    build_parser.add_argument("--basemap", "-b", default="carto-dark-matter", help="Basemap provider (default: carto-dark-matter)")
-    build_parser.add_argument("--theme", default="dark", choices=["dark", "light"], help="Color theme (default: dark)")
-    build_parser.add_argument("--out", "-o", default="multimap_dashboard.html", help="Output HTML file path")
-    build_parser.add_argument("--open", action="store_true", help="Open generated HTML dashboard in default browser")
+    build_parser.add_argument(
+        "--basemap",
+        "-b",
+        default="carto-dark-matter",
+        help="Basemap provider (default: carto-dark-matter)",
+    )
+    build_parser.add_argument(
+        "--theme", default="dark", choices=["dark", "light"], help="Color theme (default: dark)"
+    )
+    build_parser.add_argument(
+        "--out", "-o", default="multimap_dashboard.html", help="Output HTML file path"
+    )
+    build_parser.add_argument(
+        "--open", action="store_true", help="Open generated HTML dashboard in default browser"
+    )
 
     # Subcommand: compare (Swipe Map)
     compare_parser = subparsers.add_parser("compare", help="Create split-screen curtain swipe map")
@@ -40,11 +60,17 @@ def main(args: list[str] | None = None) -> int:
     compare_parser.add_argument("right_layer", help="Right / After GeoJSON file path")
     compare_parser.add_argument("--left-title", default="Before", help="Left layer title")
     compare_parser.add_argument("--right-title", default="After", help="Right layer title")
-    compare_parser.add_argument("--out", "-o", default="swipe_map.html", help="Output HTML file path")
-    compare_parser.add_argument("--open", action="store_true", help="Open generated swipe map in browser")
+    compare_parser.add_argument(
+        "--out", "-o", default="swipe_map.html", help="Output HTML file path"
+    )
+    compare_parser.add_argument(
+        "--open", action="store_true", help="Open generated swipe map in browser"
+    )
 
     # Subcommand: inspect
-    inspect_parser = subparsers.add_parser("inspect", help="Inspect GeoJSON layer features, bounding box, and properties")
+    inspect_parser = subparsers.add_parser(
+        "inspect", help="Inspect GeoJSON layer features, bounding box, and properties"
+    )
     inspect_parser.add_argument("input_file", help="GeoJSON file path to inspect")
 
     # Subcommand: tiles
@@ -76,14 +102,18 @@ def main(args: list[str] | None = None) -> int:
 
         out_path = os.path.abspath(parsed_args.out)
         mm.to_html(out_path)
-        print(f"✓ Synchronized MultiMap dashboard generated: {out_path} ({os.path.getsize(out_path):,} bytes)")
+        print(
+            f"✓ Synchronized MultiMap dashboard generated: {out_path} ({os.path.getsize(out_path):,} bytes)"
+        )
 
         if parsed_args.open:
             webbrowser.open(f"file://{out_path}")
         return 0
 
     elif parsed_args.command == "compare":
-        if not os.path.exists(parsed_args.left_layer) or not os.path.exists(parsed_args.right_layer):
+        if not os.path.exists(parsed_args.left_layer) or not os.path.exists(
+            parsed_args.right_layer
+        ):
             print("Error: One or both layer files not found.", file=sys.stderr)
             return 1
 
@@ -95,7 +125,9 @@ def main(args: list[str] | None = None) -> int:
         )
         out_path = os.path.abspath(parsed_args.out)
         sm.to_html(out_path)
-        print(f"✓ Split-screen Swipe Map generated: {out_path} ({os.path.getsize(out_path):,} bytes)")
+        print(
+            f"✓ Split-screen Swipe Map generated: {out_path} ({os.path.getsize(out_path):,} bytes)"
+        )
 
         if parsed_args.open:
             webbrowser.open(f"file://{out_path}")
