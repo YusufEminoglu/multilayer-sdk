@@ -96,7 +96,7 @@ Instead of toggling layers on and off in a single map, `multilayer` coordinates 
 Install the package in editable mode together with the test, lint, and packaging toolchain:
 
 ```bash
-git clone https://gitlab.com/geospacephilo/multilayer-sdk.git
+git clone https://github.com/YusufEminoglu/multilayer-sdk.git
 cd multilayer-sdk
 python -m pip install -e ".[dev]"
 ```
@@ -422,7 +422,7 @@ If you use **multilayer-sdk** in scientific publications, planning projects, or 
   publisher = {Zenodo},
   version   = {0.12.2},
   doi       = {10.5281/zenodo.23677246},
-  url       = {https://gitlab.com/geospacephilo/multilayer-sdk}
+  url       = {https://github.com/YusufEminoglu/multilayer-sdk}
 }
 ```
 
