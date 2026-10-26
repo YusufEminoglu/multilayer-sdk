@@ -1,0 +1,28 @@
+cff-version: 1.2.0
+message: "If you use this software, please cite it as below."
+type: software
+authors:
+  - family-names: "Eminoğlu"
+    given-names: "Yusuf"
+    email: "yusufeminoglu@gmail.com"
+    orcid: "https://orcid.org/0009-0005-6000-2934"
+title: "multilayer-sdk"
+version: "0.12.2"
+date-released: "2026-10-26"
+license: "MIT"
+repository-code: "https://github.com/YusufEminoglu/multilayer-sdk"
+url: "https://pypi.org/project/multilayer-sdk/"
+abstract: "Synchronized side-by-side and swipe maps for Jupyter and standalone HTML: compare 2-8 linked map panels without a JavaScript build."
+keywords:
+  - "gis"
+  - "multimap"
+  - "multilayer"
+  - "geovisualization"
+  - "spatial-comparison"
+  - "synchronized-maps"
+  - "side-by-side"
+  - "curtain-swipe"
+  - "geojson"
+  - "geopandas"
+  - "leaflet"
+  - "dashboard"
