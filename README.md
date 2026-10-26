@@ -5,6 +5,7 @@
 # multilayer-sdk
 
 [![PyPI Version](https://img.shields.io/pypi/v/multilayer-sdk.svg?color=10b981&label=PyPI%20package)](https://pypi.org/project/multilayer-sdk/)
+[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.23677246.svg)](https://doi.org/10.5281/zenodo.23677246)
 [![Python Versions](https://img.shields.io/pypi/pyversions/multilayer-sdk.svg?color=06b6d4)](https://pypi.org/project/multilayer-sdk/)
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](https://github.com/YusufEminoglu/multilayer-sdk/blob/main/LICENSE)
 
@@ -418,8 +419,9 @@ If you use **multilayer-sdk** in scientific publications, planning projects, or 
   author    = {Emino{\u{g}}lu, Yusuf},
   title     = {{multilayer-sdk: Pure-Python Synchronized Multi-Panel Map Visualization, Spatial Comparison Engine, and Interactive Dashboard Builder}},
   year      = {2026},
-  publisher = {PyPI - Python Package Index},
+  publisher = {Zenodo},
   version   = {0.12.2},
+  doi       = {10.5281/zenodo.23677246},
   url       = {https://gitlab.com/geospacephilo/multilayer-sdk}
 }
 ```
