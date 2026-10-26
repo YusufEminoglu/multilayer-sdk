@@ -420,7 +420,7 @@ If you use **multilayer-sdk** in scientific publications, planning projects, or 
   title     = {{multilayer-sdk: Pure-Python Synchronized Multi-Panel Map Visualization, Spatial Comparison Engine, and Interactive Dashboard Builder}},
   year      = {2026},
   publisher = {Zenodo},
-  version   = {0.12.2},
+  version   = {0.12.3},
   doi       = {10.5281/zenodo.23677246},
   url       = {https://github.com/YusufEminoglu/multilayer-sdk}
 }
