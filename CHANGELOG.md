@@ -3,11 +3,14 @@
 All notable changes to this project will be documented in this file.
 
 ## [Unreleased]
+
+## [0.12.2] - 2026-10-26
 ### Added
 - Comprehensive edge-case tests covering grid parsing, panel/layer error paths, tile providers, choropleth fallbacks, hexbin statistics, atlas lazy generation, CLI error handling, and module-level helpers.
 - `notebook` optional extra for inline IPython/Jupyter rendering.
 
 ### Changed
+- PyPI metadata: a plain-language summary, search keywords that match what users look for, and a working issue tracker link (GitHub issues; the GitLab issues page returned 404).
 - Added complete docstrings to every public and private function/method across `src/multilayer`.
 - Expanded `README.md` with detailed installation (including the `dev` extra), verified usage examples, a feature list, and a public API reference table.
 - Aligned packaging metadata with the actual runtime imports: dropped unused Matplotlib from the `geo` extra, declared license files, and raised the setuptools build requirement for PEP 639 support.

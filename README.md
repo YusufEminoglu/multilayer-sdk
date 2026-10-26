@@ -4,19 +4,54 @@
 
 # multilayer-sdk
 
-**Pure-Python Synchronized Multi-Panel Map Visualization, Spatial Comparison Engine & Interactive Dashboard Builder.**
-
 [![PyPI Version](https://img.shields.io/pypi/v/multilayer-sdk.svg?color=10b981&label=PyPI%20package)](https://pypi.org/project/multilayer-sdk/)
 [![Python Versions](https://img.shields.io/pypi/pyversions/multilayer-sdk.svg?color=06b6d4)](https://pypi.org/project/multilayer-sdk/)
-[![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
+[![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](https://github.com/YusufEminoglu/multilayer-sdk/blob/main/LICENSE)
 
 [![Documentation](https://img.shields.io/badge/docs-GEOPHILO-10b981.svg)](https://geophilo.com/multilayer-sdk/)
 
-<br/>
+**Synchronized side-by-side and swipe maps for Jupyter and standalone HTML: compare 2–8 linked map panels without a JavaScript build.**
 
-<img src="https://geophilo.com/assets/sdk_icons/multilayer_sdk.svg" width="100%" alt="multilayer-sdk Architecture"/>
+[📖 **Open Interactive Web Manual**](https://geophilo.com/multilayer-sdk/) • [📦 **PyPI Package**](https://pypi.org/project/multilayer-sdk/) • [🐙 **GitHub**](https://github.com/YusufEminoglu/multilayer-sdk) • [🐛 **Issue Tracker**](https://github.com/YusufEminoglu/multilayer-sdk/issues)
 
 </div>
+
+---
+
+## 📦 Installation
+
+```bash
+pip install multilayer-sdk                # core: no third-party dependencies
+pip install "multilayer-sdk[geo]"         # + Shapely and GeoPandas (GeoDataFrame interop)
+pip install "multilayer-sdk[notebook]"    # + IPython for inline display in Jupyter
+```
+
+Requires **Python 3.9+**.
+
+## ⚡ Quickstart
+
+```python
+import multilayer as ml
+
+def square(x, y, value):
+    ring = [[x, y], [x + 0.01, y], [x + 0.01, y + 0.01], [x, y + 0.01], [x, y]]
+    return {"type": "Feature", "properties": {"value": value},
+            "geometry": {"type": "Polygon", "coordinates": [ring]}}
+
+before = {"type": "FeatureCollection", "features": [square(28.97, 41.00, 10)]}
+after = {"type": "FeatureCollection", "features": [square(28.97, 41.00, 25)]}
+
+mm = ml.MultiMap(grid="1x2", title="Before / After")  # 1x2, 2x1, 1x3, 2x2, 2x3 or 2x4
+mm.panel(0).add_layer(before)
+mm.panel(1).add_layer(after)
+mm.to_html("compare.html")  # one self-contained HTML file; mm.show() in Jupyter
+
+ml.SwipeMap(left_layer=before, right_layer=after).to_html("swipe.html")
+print("wrote compare.html and swipe.html")
+# wrote compare.html and swipe.html
+```
+
+Open `compare.html` in a browser: panning or zooming one panel moves the other. GeoJSON file paths work in place of the dicts.
 
 ---
 
@@ -55,25 +90,7 @@ Instead of toggling layers on and off in a single map, `multilayer` coordinates 
 
 ---
 
-## 🚀 Installation
-
-### From PyPI (recommended)
-
-```bash
-pip install multilayer-sdk
-```
-
-The core package is dependency-free and targets **Python 3.9+**.
-
-### Optional geospatial extras
-
-The `geo` extra adds GeoPandas, Shapely, and Matplotlib for GeoDataFrame interop and notebook workflows:
-
-```bash
-pip install "multilayer-sdk[geo]"
-```
-
-### Development install
+## 🚀 Development Install
 
 Install the package in editable mode together with the test, lint, and packaging toolchain:
 
@@ -93,7 +110,7 @@ python -c "import multilayer as ml; print(ml.__version__)"
 
 ---
 
-## ⚡ Quickstart
+## 🗺️ Usage Examples
 
 ### 1. Build a 4-Panel Synchronized Workspace
 
@@ -289,12 +306,12 @@ multilayer --version
 
 | Grid Preset | Layout Dimensions | Panel Count | Primary Cartographic Use Case |
 | :--- | :--- | :--- | :--- |
-| **`1x2`** | 1 Row $\times$ 2 Columns | 2 Panels | Before/After comparisons, Suitability vs Actual zoning |
-| **`2x1`** | 2 Rows $\times$ 1 Column | 2 Panels | Vertical elevation profiles, transport corridors |
-| **`1x3`** | 1 Row $\times$ 3 Columns | 3 Panels | Past $\rightarrow$ Present $\rightarrow$ Future temporal timelines |
-| **`2x2`** | 2 Rows $\times$ 2 Columns | 4 Panels | 4-way evaluation (Base, Demographics, Hazards, Policy) |
-| **`2x3`** | 2 Rows $\times$ 3 Columns | 6 Panels | Multi-criteria evaluation (MCDA factor grids) |
-| **`2x4`** | 2 Rows $\times$ 4 Columns | 8 Panels | High-density multi-scenario sensitivity snapshots |
+| **`1x2`** | 1 Row × 2 Columns | 2 Panels | Before/After comparisons, Suitability vs Actual zoning |
+| **`2x1`** | 2 Rows × 1 Column | 2 Panels | Vertical elevation profiles, transport corridors |
+| **`1x3`** | 1 Row × 3 Columns | 3 Panels | Past → Present → Future temporal timelines |
+| **`2x2`** | 2 Rows × 2 Columns | 4 Panels | 4-way evaluation (Base, Demographics, Hazards, Policy) |
+| **`2x3`** | 2 Rows × 3 Columns | 6 Panels | Multi-criteria evaluation (MCDA factor grids) |
+| **`2x4`** | 2 Rows × 4 Columns | 8 Panels | High-density multi-scenario sensitivity snapshots |
 
 Custom grids can also be supplied as any `"RxC"` string or via `GridLayout(custom_rows=..., custom_cols=...)`.
 
@@ -402,7 +419,7 @@ If you use **multilayer-sdk** in scientific publications, planning projects, or 
   title     = {{multilayer-sdk: Pure-Python Synchronized Multi-Panel Map Visualization, Spatial Comparison Engine, and Interactive Dashboard Builder}},
   year      = {2026},
   publisher = {PyPI - Python Package Index},
-  version   = {0.12.1},
+  version   = {0.12.2},
   url       = {https://gitlab.com/geospacephilo/multilayer-sdk}
 }
 ```
