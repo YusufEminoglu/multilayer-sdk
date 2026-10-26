@@ -13,6 +13,12 @@ All notable changes to this project will be documented in this file.
 - Aligned packaging metadata with the actual runtime imports: dropped unused Matplotlib from the `geo` extra, declared license files, and raised the setuptools build requirement for PEP 639 support.
 - Normalized formatting across `src` and `tests` with Ruff.
 
+### Fixed
+- `MultiMap._repr_html_` and `SwipeMap._repr_html_` now HTML-escape the whole document for the
+  iframe `srcdoc` attribute. Previously only `"` was escaped, so entities such as `&lt;` in the
+  generated page were decoded once by the browser and turned into live markup.
+- `get_bounds` evaluates each layer/panel extent once and is now fully type-checked (mypy clean).
+
 ## [0.12.0] - 2026-08-30
 ### Added
 - **Multi-Layer Distance Proximity Matrix & Heatmap Grid (`matrix_proximity_heatmap_grid.py`)**: Added `ProximityMatrixHeatmapMap` for multi-facility Euclidean distance rasterization and zone thresholds.

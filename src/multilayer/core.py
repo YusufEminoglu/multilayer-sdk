@@ -3,6 +3,7 @@
 
 from __future__ import annotations
 
+import html
 import os
 from dataclasses import dataclass, field
 from typing import Any
@@ -53,7 +54,7 @@ class Panel:
 
     def get_bounds(self) -> tuple[float, float, float, float] | None:
         """Calculate union bounding box of all layers in this panel."""
-        boxes = [lyr.get_bounds() for lyr in self.layers if lyr.get_bounds() is not None]
+        boxes = [b for b in (lyr.get_bounds() for lyr in self.layers) if b is not None]
         if not boxes:
             return None
         min_lon = min(b[0] for b in boxes)
@@ -145,7 +146,7 @@ class MultiMap:
 
     def get_bounds(self) -> tuple[float, float, float, float] | None:
         """Calculate union bounding box of all panels."""
-        boxes = [p.get_bounds() for p in self.panels if p.get_bounds() is not None]
+        boxes = [b for b in (p.get_bounds() for p in self.panels) if b is not None]
         if not boxes:
             return None
         min_lon = min(b[0] for b in boxes)
@@ -176,13 +177,13 @@ class MultiMap:
     def _repr_html_(self) -> str:
         """Direct inline HTML representation inside Jupyter Notebook / Google Colab."""
         html_data = self.to_html()
-        escaped = html_data.replace('"', "&quot;")
+        escaped = html.escape(html_data, quote=True)
         return f'<iframe srcdoc="{escaped}" width="100%" height="600px" style="border:1px solid #1e293b;border-radius:8px;"></iframe>'
 
     def show(self) -> None:
         """Display inline widget in Jupyter Notebook environments."""
         try:
-            from IPython.display import HTML, display
+            from IPython.display import HTML, display  # type: ignore[import-not-found]
 
             display(HTML(self._repr_html_()))
         except ImportError:
@@ -256,7 +257,7 @@ class SwipeMap:
     def _repr_html_(self) -> str:
         """Inline HTML iframe representation for Jupyter Notebook / Google Colab."""
         html_data = self.to_html()
-        escaped = html_data.replace('"', "&quot;")
+        escaped = html.escape(html_data, quote=True)
         return f'<iframe srcdoc="{escaped}" width="100%" height="600px" style="border:1px solid #1e293b;border-radius:8px;"></iframe>'
 
 

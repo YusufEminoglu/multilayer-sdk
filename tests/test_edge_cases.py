@@ -359,3 +359,17 @@ def test_cli_error_paths_and_version(capsys):
     assert cli_main(["build", "--layers", "does_not_exist.geojson"]) == 1
     assert cli_main(["compare", "missing_a.geojson", "missing_b.geojson"]) == 1
     assert cli_main(["inspect", "missing.geojson"]) == 1
+
+
+def test_repr_html_srcdoc_roundtrips_entities():
+    """The srcdoc attribute decodes back to the exact standalone HTML."""
+    import html as html_lib
+    import re
+
+    from multilayer import SwipeMap
+
+    for widget in (MultiMap(grid="1x2", title="R&D <draft>"), SwipeMap(title="A & B")):
+        source = widget.to_html()
+        match = re.fullmatch(r'<iframe srcdoc="([^"]*)".*', widget._repr_html_(), re.S)
+        assert match is not None
+        assert html_lib.unescape(match.group(1)) == source
